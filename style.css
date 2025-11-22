@@ -66,6 +66,16 @@
       color: #ffe914;
     }
 
+/*Main Body and Background Styling*/
+    body {
+      margin: 0;
+      background-color: #8c8c8c;
+      color: #e0e0e0;
+      font-family: verdana;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
 /*Footer*/
   footer {
       text-align: center;
