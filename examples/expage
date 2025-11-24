@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CCST9077</title>
+  <link rel="icon" type="x-icon" href="fav.png">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0f24, #1a2a6c);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      animation: fadeIn 1.5s ease;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    nav {
+      margin-top: 20px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #9cc9ff;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto;
+      width: 150px;
+      height: auto;
+      filter: drop-shadow(0 0 10px #4fa3ff);
+    }
+
+    .center-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      animation: fadeUp 1.5s ease;
+    }
+
+    .center-section h2 {
+      font-size: 2.2rem;
+    }
+
+    .start-btn {
+      margin-top: 30px;
+      padding: 15px 40px;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      border: none;
+      background: #4fa3ff;
+      color: #000;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #4fa3ff;
+    }
+
+    .start-btn:hover {
+      background: #77c1ff;
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      opacity: 0.7;
+      animation: fadeIn 2s ease;
+    }
+
+    /* animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="logo.png" alt="Site Logo" class="logo">
+    <h1>Quantum Cryptography</h1>
+    <p><em>Cryptography of the future</em></p>
+    <nav>
+      <a href="mainpage.html">Home</a>
+      <a href="game.html">Game</a>
+      <a href="info.html">Info</a>
+      <a href="credits.html">Credits</a>
+    </nav>
+  </header>
+
+  <div class="center-section">
+    <h2>Welcome to the Quantum Encryption Challenge</h2>
+    <p>Test your mind against futuristic cryptographic puzzles.</p>
+    <button class="start-btn" onclick="window.location.href='game.html'">Start Game</button>
+  </div>
+
+  <footer>
+    &copy; CCST9077
+  </footer>
+</body>
+</html>
