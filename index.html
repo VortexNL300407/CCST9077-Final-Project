@@ -27,5 +27,68 @@
     <footer>
       &copy; CCST9077 | Members : 
     </footer>
+
+    
+    <!-- Floating Info Icon + Hover Popup -->
+    <style>
+      #info-container {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 99999; /* Always on top */
+        font-family: Arial, sans-serif;
+      }
+
+      #info-icon {
+        width: 42px;
+        height: 42px;
+        background: #1f1f1f;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.35);
+        transition: background 0.2s, transform 0.2s;
+      }
+    
+      #info-icon:hover {
+        background: #333;
+        transform: scale(1.07);
+      }
+    
+      #info-popup {
+        position: absolute;
+        bottom: 55px;
+        left: 0;
+        width: 220px;
+        background: #1f1f1f;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+        transform: translateY(8px);
+        font-size: 14px;
+        line-height: 1.4;
+      }
+    
+      #info-container:hover #info-popup {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+    </style>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">
+        This is an info bubble
+      </div>
+    </div>
+    
   </body>
 </html>
