@@ -15,14 +15,24 @@
       <h1>Quantum Cryptography</h1>
       <p><em>Cryptography of the future</em></p>
       <nav>
-        <a href="mainpage.html">Home</a>
-        <a href="???.html">Game</a>
-        <a href="???.html">???</a>
-        <a href="???.html">Credits</a>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
       </nav>
     </header>
-    
-    <p>Add content here<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><p>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <h2>Welcome to Quantum Cryptography</h2>
+          <p class="lead">Step into Eve's shoes and learn how modern and quantum techniques affect real-world security.</p>
+          <div class="hero-ctas">
+            <a class="btn" href="game.html">Play the Game</a>
+            <a class="btn btn-outline" href="materials.html">View Materials</a>
+          </div>
+        </div>
+      </section>
+    </main>
       
     <footer>
       &copy; CCST9077 | Members : 
@@ -86,9 +96,21 @@
     <div id="info-container">
       <div id="info-icon">ℹ</div>
       <div id="info-popup">
-        This is an info bubble
+        Story and game structure live here. Use the navigation to open pages.
       </div>
     </div>
+    <script>
+      // Small client-side interactivity for the Intro stage
+      const confirmBtn = document.getElementById('confirm-story');
+      const beginBtn = document.getElementById('begin-btn');
+      confirmBtn.addEventListener('click', () => {
+        beginBtn.disabled = false;
+        beginBtn.title = 'Begin Level 1 (placeholder link)';
+        confirmBtn.textContent = 'Story confirmed';
+        confirmBtn.disabled = true;
+        // Optionally change Begin button to navigate later when Level 1 is ready
+      });
+    </script>
     
   </body>
 </html>

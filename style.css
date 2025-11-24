@@ -76,6 +76,69 @@
       overflow-x: hidden;
     }
 
+/* Hero banner for home page */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 72vh;
+      background: linear-gradient(135deg, #0f1724 0%, #2b2f52 45%, #4b6cb7 100%);
+      color: #f4f6ff;
+      text-align: center;
+      padding: 4rem 1rem;
+    }
+
+    .hero-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      margin: 0 0 0.5rem 0;
+      color: #fff;
+      letter-spacing: 1px;
+      text-shadow: 0 6px 24px rgba(30,40,80,0.45);
+    }
+
+    .hero .lead {
+      font-size: 1.15rem;
+      margin-bottom: 1.5rem;
+      color: #dbe7ff;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #ffe14a;
+      color: #111;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(255,225,74,0.18);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.14);
+      box-shadow: none;
+    }
+
+    /* Basic page/card spacing */
+    .page { padding: 2.5rem 1rem; }
+    .card { max-width: 900px; margin: 2rem auto; background: rgba(20,20,20,0.3); padding: 1.6rem; border-radius: 10px; }
+
 /*Footer*/
   footer {
       text-align: center;
