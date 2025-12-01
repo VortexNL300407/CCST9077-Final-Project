@@ -75,7 +75,7 @@
 
 <body>
 <!-- Background Music -->
-<audio id="bgm" src="bgm.mp3" loop></audio>
+<audio id="bgm" src="media/bgm.mp3" loop></audio>
 
 <!-- Settings Button -->
 <div id="settings-btn">⚙️</div>
