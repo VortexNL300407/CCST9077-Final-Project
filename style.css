@@ -369,3 +369,33 @@
 /* Smoothly hide/show with opacity for elements toggled by JS */
 .visually-hidden { opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
 .visually-visible { opacity: 1; transition: opacity 220ms ease; }
+
+/* --- Particle / BB84 visuals --- */
+.particle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 1rem; }
+.particle-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); padding: 0.8rem; border-radius: 10px; text-align: center; color: #dbe7ff; transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms, border-color 220ms; cursor: pointer; }
+.particle-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(20,30,60,0.45); }
+.particle-number { font-size: 0.85rem; color: #aab8d9; margin-bottom: 0.6rem; }
+.particle-basis { font-size: 1.4rem; color: #9fbff6; margin-bottom: 0.35rem; }
+.particle-value { width: 48px; height: 48px; margin: 0.4rem auto 0; border-radius: 50%; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.03); color: #e6f2ff; font-weight:800; font-family: monospace; font-size:1rem; transition: transform 320ms cubic-bezier(.16,.84,.2,1), background 220ms, box-shadow 220ms; }
+.particle-card.selected { border-color: rgba(46,204,113,0.22); box-shadow: 0 12px 36px rgba(46,204,113,0.10), 0 6px 18px rgba(46,204,113,0.06); }
+.particle-card.selected .particle-value { background: linear-gradient(135deg,#7ef27e,#57acf6); color:#042018; transform: scale(1.08); box-shadow: 0 12px 40px rgba(46,204,113,0.22), 0 6px 18px rgba(46,204,113,0.12); }
+.particle-card.revealed .particle-value { animation: popIn 360ms cubic-bezier(.16,.84,.2,1) both; }
+
+/* basis icon variants */
+.basis-vertical { transform: rotate(0deg); }
+.basis-diagonal { transform: rotate(36deg); }
+
+/* layout helpers for game columns */
+.game-columns { display:flex; gap:1rem; align-items:flex-start; }
+.left-column { flex: 1 1 60%; }
+.right-column { flex: 0 0 320px; }
+.info-box { background: rgba(20,20,30,0.4); padding: 0.8rem; border-radius: 8px; }
+
+/* basis comparison / basis-grid */
+.basis-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 1rem; }
+.basis-card { padding: 0.8rem; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); }
+.basis-card.match { border-left: 4px solid #7ef27e; }
+.basis-card.mismatch { border-left: 4px solid #ff9a9a; }
+
+/* responsive */
+@media (max-width: 880px){ .game-columns{ flex-direction:column; } .right-column{ flex-basis: auto; width:100%; } }
