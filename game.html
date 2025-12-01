@@ -135,6 +135,9 @@
         answered = false;
         answerInput.focus();
         scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
+        // animate qbox entrance
+        const qbox = document.getElementById('qbox');
+        if(qbox){ qbox.classList.remove('animate-question'); void qbox.offsetWidth; qbox.classList.add('animate-question'); qbox.addEventListener('animationend', function aq(){ qbox.classList.remove('animate-question'); qbox.removeEventListener('animationend', aq); }); }
       }
 
       function checkAnswer(){
@@ -147,6 +150,9 @@
           feedback.textContent = 'Correct!';
           correctCount++;
           explanation.textContent = questions[idx].explanation || '';
+          // animate feedback & explanation
+          feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
+          explanation.classList.remove('animate-explain'); void explanation.offsetWidth; explanation.classList.add('animate-explain');
           answered = true;
           giveupBtn.disabled = true;
           submitBtn.disabled = true;
@@ -154,6 +160,7 @@
         } else {
           feedback.style.color = '#ff9a9a';
           feedback.textContent = 'Incorrect. Try again or give up to see the answer.';
+          feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
         }
         scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
         saveProgress();
@@ -165,9 +172,12 @@
       hintBtn.addEventListener('click', ()=>{
         const q = questions[idx];
         if(q.hint){
-          hintLine.style.display = hintLine.style.display === 'none' ? 'block' : 'none';
+          const showing = hintLine.style.display !== 'none';
+          hintLine.style.display = showing ? 'none' : 'block';
+          if(!showing){ hintLine.classList.remove('animate-in'); void hintLine.offsetWidth; hintLine.classList.add('animate-in'); hintLine.addEventListener('animationend', function ah(){ hintLine.classList.remove('animate-in'); hintLine.removeEventListener('animationend', ah); }); }
         } else {
-          alert('No hint available for this question.');
+          feedback.style.color = '#ffd36a'; feedback.textContent = 'No hint available for this question.';
+          feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
         }
       });
 
@@ -176,12 +186,15 @@
         if(answered) return;
         // Show inline confirmation
         confirmGiveupDiv.style.display = 'block';
+        confirmGiveupDiv.classList.remove('animate-eval'); void confirmGiveupDiv.offsetWidth; confirmGiveupDiv.classList.add('animate-eval');
       });
 
       confirmYesBtn.addEventListener('click', ()=>{
         feedback.style.color = '#ffb347';
         feedback.textContent = `You gave up. The answer was: ${questions[idx].answer}`;
         explanation.textContent = questions[idx].explanation || '';
+        feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
+        explanation.classList.remove('animate-explain'); void explanation.offsetWidth; explanation.classList.add('animate-explain');
         answered = true;
         giveupBtn.disabled = true;
         submitBtn.disabled = true;
@@ -222,6 +235,30 @@
       <div id="info-icon">ℹ</div>
       <div id="info-popup">Hello! I'm a placeholder!</div>
     </div>
+      <!-- Levels slide-out tab -->
+      <div id="levels-tab" title="Open levels">Levels</div>
+      <aside id="levels-sidebar" aria-hidden="true">
+        <button id="levels-close" class="btn btn-outline">Close</button>
+        <h3>Levels</h3>
+        <ul class="levels-list">
+          <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+          <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
+          <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
+        </ul>
+      </aside>
+
+      <script>
+        (function(){
+          const tab = document.getElementById('levels-tab');
+          const sidebar = document.getElementById('levels-sidebar');
+          const closeBtn = document.getElementById('levels-close');
+          if(tab && sidebar){
+            tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+            closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+            document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+          }
+        })();
+      </script>
   </body>
 </html>
 

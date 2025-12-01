@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Level 2 - Quantum Cryptography</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Quantum Cryptography</h1>
+      <p><em>Cryptography of the future</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <h2>Level 2 — Modern Cryptography (Materials)</h2>
+        <p>After a few weeks, Alice and Bob upgraded their communication security to Modern Public Key Cryptography.</p>
+        <p>This section will hold short materials covering:
+          <ul>
+            <li>Quantum superposition &amp; entanglement</li>
+            <li>Quantum computing — what it is and what it isn't</li>
+            <li>High-level concept of Shor's algorithm (no math)</li>
+          </ul>
+        </p>
+        <p>(Materials placeholder — content to be added here.)</p>
+      </section>
+
+      <section class="card" id="mcq">
+        <h2>Level 2 — Knowledge Check (MCQ)</h2>
+        <p>Answer the multiple-choice questions to test your understanding.</p>
+
+        <div id="quiz">
+          <div id="question-box">
+            <p id="qnum"></p>
+            <p id="question" style="font-weight:700;"></p>
+            <div id="choices" style="margin-top:0.6rem;"></div>
+          </div>
+
+          <div style="margin-top:0.8rem; display:flex; gap:0.6rem;">
+            <button id="submit" class="btn">Submit</button>
+            <button id="next" class="btn btn-outline" disabled>Next</button>
+            <button id="restart" class="btn btn-outline">Restart</button>
+          </div>
+
+          <div id="feedback" style="margin-top:1rem; font-weight:700;"></div>
+          <div id="explanation" style="margin-top:0.6rem; color:#d0d8ff;"></div>
+          <div id="score" style="margin-top:1rem; color:#ffe14a;">Score: 0 / 0</div>
+        </div>
+
+        <!-- Evaluation panel shown after last question -->
+        <div id="evaluation" style="display:none; margin-top:1rem; padding:1rem; background:rgba(30,30,40,0.7); border-radius:8px;">
+          <h3 id="eval-title">Level 2 Summary</h3>
+          <p id="eval-text"></p>
+          <div style="display:flex; gap:0.6rem; margin-top:0.6rem;">
+            <button id="continue-level3" class="btn">Continue to Level 3</button>
+            <button id="back-levels" class="btn btn-outline">Back to Levels</button>
+          </div>
+        </div>
+
+        <p style="margin-top:1.4rem"><a class="btn" href="levels.html">Back to Levels</a></p>
+      </section>
+    </main>
+
+    <footer>
+      &copy; CCST9077 | Members :
+    </footer>
+    <!-- Levels slide-out tab -->
+    <div id="levels-tab" title="Open levels">Levels</div>
+    <aside id="levels-sidebar" aria-hidden="true">
+      <button id="levels-close" class="btn btn-outline">Close</button>
+      <h3>Levels</h3>
+      <ul class="levels-list">
+        <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+        <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
+        <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
+      </ul>
+    </aside>
+
+    <script>
+      (function(){
+        const tab = document.getElementById('levels-tab');
+        const sidebar = document.getElementById('levels-sidebar');
+        const closeBtn = document.getElementById('levels-close');
+        if(tab && sidebar){
+          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+        }
+      })();
+    </script>
+
+    <script>
+      // Level 2 MCQ logic
+      (function(){
+        const questions = [
+          {
+            q: "A qubit is in a perfect superposition, meaning it's exactly halfway between 0 and 1. What happens when you measure it?",
+            choices: [
+              "It stays in superposition.",
+              "You get either a 0 or a 1, with equal probability.",
+              "You get both a 0 and a 1 simultaneously.",
+              "The qubit is destroyed."
+            ],
+            correct: 1,
+            explanation: "Measurement forces the qubit to collapse into a single, definite state. In a perfect 'halfway' superposition, the outcome is completely random, like a fair coin flip. You have a 50/50 chance of finding it as a 0 or a 1."
+          },
+          {
+            q: "What is the main advantage of a qubit being in superposition?",
+            choices: [
+              "It makes the qubit physically smaller.",
+              "It transmits information faster than light.",
+              "It allows a quantum computer to perform many calculations at the same time.",
+              "It makes the qubit immune to errors."
+            ],
+            correct: 2,
+            explanation: "Because a qubit can represent multiple states at once, a quantum computer can use this property to process a massive number of possibilities simultaneously. This 'quantum parallelism' is a key source of its potential speed for certain problems."
+          },
+          {
+            q: "How is the information from a measured qubit different from a classical bit?",
+            choices: [
+              "It contains more information after being measured.",
+              "It is exactly the same; it's just a 0 or a 1.",
+              "It can be used to send messages into the past.",
+              "It is stored in a more durable format."
+            ],
+            correct: 1,
+            explanation: "Once measured, the qubit's superposition is gone, and the result is a perfectly ordinary classical bit—a definitive 0 or a 1. The quantum 'magic' happens before the measurement, during the calculation."
+          }
+        ];
+
+        let idx = 0; let score = 0; let attempts = 0; let answered = false;
+
+        const qnum = document.getElementById('qnum');
+        const qel = document.getElementById('question');
+        const choicesEl = document.getElementById('choices');
+        const submit = document.getElementById('submit');
+        const next = document.getElementById('next');
+        const restart = document.getElementById('restart');
+        const feedback = document.getElementById('feedback');
+        const explanation = document.getElementById('explanation');
+        const scoreEl = document.getElementById('score');
+        const evalPanel = document.getElementById('evaluation');
+        const evalText = document.getElementById('eval-text');
+        const continueBtn = document.getElementById('continue-level3');
+        const backLevelsBtn = document.getElementById('back-levels');
+
+        function render(){
+          const cur = questions[idx];
+          qnum.textContent = `Question ${idx+1} of ${questions.length}`;
+          qel.textContent = cur.q;
+          choicesEl.innerHTML = '';
+          cur.choices.forEach((c,i)=>{
+            const id = `choice-${i}`;
+            const wrapper = document.createElement('div');
+            wrapper.style.margin = '0.4rem 0';
+            wrapper.innerHTML = `<label style=\"cursor:pointer;\"><input type=\"radio\" name=\"choice\" value=\"${i}\" id=\"${id}\" /> ${String.fromCharCode(97+i)}) ${c}</label>`;
+            choicesEl.appendChild(wrapper);
+          });
+          feedback.textContent = '';
+          explanation.textContent = '';
+          // animate question entrance
+          const questionBox = document.getElementById('question-box');
+          if(questionBox){
+            questionBox.classList.remove('animate-question');
+            // trigger reflow then add class to restart animation
+            void questionBox.offsetWidth;
+            questionBox.classList.add('animate-question');
+            questionBox.addEventListener('animationend', function aq(){ questionBox.classList.remove('animate-question'); questionBox.removeEventListener('animationend', aq); });
+          }
+          submit.disabled = false;
+          next.disabled = true;
+          answered = false;
+          // hide evaluation panel if shown
+          if(evalPanel) evalPanel.style.display = 'none';
+          updateScore();
+        }
+
+        function updateScore(){ scoreEl.textContent = `Score: ${score} / ${attempts}`; }
+
+        function getSelected(){ const r = document.querySelector('input[name="choice"]:checked'); return r ? parseInt(r.value,10) : null; }
+
+        submit.addEventListener('click', ()=>{
+          if(answered) return;
+          const sel = getSelected();
+          if(sel === null){
+            feedback.style.color = '#ffd36a';
+            feedback.textContent = 'Please select an answer.';
+            feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
+            return;
+          }
+          attempts++;
+          if(sel === questions[idx].correct){
+            feedback.style.color = '#7ef27e'; feedback.textContent = 'Correct!'; score++;
+            explanation.textContent = questions[idx].explanation || '';
+            // animate feedback and explanation
+            feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
+            explanation.classList.remove('animate-explain'); void explanation.offsetWidth; explanation.classList.add('animate-explain');
+            submit.disabled = true; next.disabled = false; answered = true;
+          } else {
+            feedback.style.color = '#ff9a9a'; feedback.textContent = 'Incorrect. Review the explanation and try the next question.';
+            explanation.textContent = questions[idx].explanation || '';
+            feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
+            explanation.classList.remove('animate-explain'); void explanation.offsetWidth; explanation.classList.add('animate-explain');
+            submit.disabled = true; next.disabled = false; answered = true;
+          }
+          updateScore();
+        });
+
+        next.addEventListener('click', ()=>{
+          // If not at last question, go to next; otherwise show evaluation summary
+          if(idx + 1 < questions.length){
+            idx = idx + 1;
+            render();
+          } else {
+            // Show evaluation summary (flexible to number of questions)
+            evalText.textContent = `You scored ${score} out of ${attempts} attempted questions.`;
+            evalPanel.style.display = 'block';
+            // add entrance animation to evaluation
+            evalPanel.classList.remove('animate-eval'); void evalPanel.offsetWidth; evalPanel.classList.add('animate-eval');
+            // disable quiz controls while evaluation is visible
+            submit.disabled = true;
+            next.disabled = true;
+          }
+        });
+
+        continueBtn.addEventListener('click', ()=>{
+          // Optionally could pass data via query params/localStorage
+          window.location.href = 'level3.html';
+        });
+
+        backLevelsBtn.addEventListener('click', ()=>{
+          window.location.href = 'levels.html';
+        });
+
+        restart.addEventListener('click', ()=>{ idx = 0; score = 0; attempts = 0; render(); });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
