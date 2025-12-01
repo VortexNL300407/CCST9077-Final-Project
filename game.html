@@ -20,7 +20,7 @@
     <main class="page">
       <section class="card">
         <h2>Level 1 — Caesar's Cipher</h2>
-        <p>Bob's messages use a Caesar cipher. Decode the messages and type the plaintext answer (case-insensitive).</p>
+        <p>Bob's messages use a Caesar cipher. Decode the messages and type the plaintext answer.</p>
 
         <div id="level1">
           <div id="qbox">
@@ -31,11 +31,11 @@
 
           <div id="answer-area" style="margin-top:1rem;">
             <label for="answer">Your answer</label><br>
-            <input id="answer" type="text" placeholder="Type decoded message here" style="width:100%; padding:0.6rem; font-size:1rem; margin-top:0.4rem;" />
+            <input id="answer" type="text" placeholder="Type decoded message here" style="width:95%; padding:0.6rem; font-size:1rem; margin-top:0.4rem;" />
             <div style="margin-top:0.6rem; display:flex; gap:0.6rem;">
               <button id="hint" class="btn btn-outline">Show Hint</button>
-              <button id="submit" class="btn">Submit</button>
               <button id="giveup" class="btn btn-outline">Give up</button>
+              <button id="submit" class="btn">Submit</button>
               <button id="next" class="btn btn-outline" style="display:none;">Next</button>
             </div>
           </div>
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div id="score" style="margin-top:1rem; color:#ffe14a;">Score: 0 / 0</div>
+          <div id="score" style="margin-top:1rem; color:#ffffff;">Score: 0 / 0</div>
         </div>
 
         <p style="margin-top:1.4rem"><a class="btn" href="index.html">Return Home</a></p>
@@ -97,6 +97,29 @@
 
         let idx = 0; let correctCount = 0; let attemptCount = 0; let answered = false;
 
+        // Save progress to localStorage
+        function saveProgress() {
+          const progress = {
+            idx: idx,
+            correctCount: correctCount,
+            attemptCount: attemptCount,
+            answered: answered
+          };
+          localStorage.setItem('level1Progress', JSON.stringify(progress));
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+          const saved = localStorage.getItem('level1Progress');
+          if(saved) {
+            const progress = JSON.parse(saved);
+            idx = progress.idx;
+            correctCount = progress.correctCount;
+            attemptCount = progress.attemptCount;
+            answered = progress.answered;
+          }
+        }
+
       function loadQuestion(i){
         const q = questions[i];
         encryptedEl.textContent = q.encrypted;
@@ -133,6 +156,7 @@
           feedback.textContent = 'Incorrect. Try again or give up to see the answer.';
         }
         scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
+        saveProgress();
       }
 
       submitBtn.addEventListener('click', checkAnswer);
@@ -165,6 +189,7 @@
         scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
         confirmGiveupDiv.style.display = 'none';
         nextBtn.style.display = '';
+        saveProgress();
       });
 
       confirmNoBtn.addEventListener('click', ()=>{
@@ -174,20 +199,42 @@
       nextBtn.addEventListener('click', ()=>{
         idx = (idx + 1) % questions.length;
         loadQuestion(idx);
+        saveProgress();
       });
 
+      // Load saved progress on page load
+      loadProgress();
       // Initial load
       loadQuestion(idx);
       }); // End DOMContentLoaded
     </script>
 
     <footer>
-      &copy; CCST9077 | Members :
+      CCST9077 | Members:
     </footer>
 
+    <div id="settings-btn">⚙️</div>
+    <div id="settings-menu">
+      <div id="1option" class="option">Option 1</div>
+      <div id="2option" class="option">Option 2</div>
+    </div>
     <div id="info-container">
       <div id="info-icon">ℹ</div>
-      <div id="info-popup">Game placeholder page</div>
+      <div id="info-popup">Hello! I'm a placeholder!</div>
     </div>
   </body>
 </html>
+
+<script>
+  const btn = document.getElementById("settings-btn");
+  const menu = document.getElementById("settings-menu");
+  const oneOption = document.getElementById("1option");
+  const twoOption = document.getElementById("2option");
+
+  let menuOpen = false;
+
+  btn.onclick = () => {
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? "block" : "none";
+  };
+</script>
