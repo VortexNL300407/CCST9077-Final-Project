@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quantum Cryptography - Game</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Quantum Cryptography</h1>
+      <p><em>Cryptography of the future</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <h2>Level 1 — Caesar's Cipher</h2>
+        <p>Bob's messages use a Caesar cipher. Decode the messages and type the plaintext answer.</p>
+
+        <div id="level1">
+          <div id="qbox">
+            <p><strong>Encrypted message:</strong></p>
+            <div id="encrypted" class="encrypted">--</div>
+            <p id="hintline" style="margin-top:0.6rem; display:none;"></p>
+          </div>
+
+          <div id="answer-area" style="margin-top:1rem;">
+            <label for="answer">Your answer</label><br>
+            <input id="answer" type="text" placeholder="Type decoded message here" style="width:95%; padding:0.6rem; font-size:1rem; margin-top:0.4rem;" />
+            <div style="margin-top:0.6rem; display:flex; gap:0.6rem;">
+              <button id="hint" class="btn btn-outline">Show Hint</button>
+              <button id="giveup" class="btn btn-outline">Give up</button>
+              <button id="submit" class="btn">Submit</button>
+              <button id="next" class="btn btn-outline" style="display:none;">Next</button>
+            </div>
+          </div>
+
+          <div id="feedback" style="margin-top:1rem; font-weight:700;"></div>
+          <div id="explanation" style="margin-top:0.6rem; color:#d0d8ff;"></div>
+          
+          <!-- Inline confirmation dialog for Give up -->
+          <div id="confirm-giveup" style="display:none; margin-top:1rem; padding:1rem; background:rgba(255,179,71,0.15); border:2px solid #ffb347; border-radius:8px;">
+            <p style="margin:0 0 0.8rem 0; color:#ffb347; font-weight:700;">Are you sure you want to give up and see the answer?</p>
+            <div style="display:flex; gap:0.6rem;">
+              <button id="confirm-yes" class="btn">Yes, give up</button>
+              <button id="confirm-no" class="btn btn-outline">Cancel</button>
+            </div>
+          </div>
+
+          <div id="score" style="margin-top:1rem; color:#ffffff;">Score: 0 / 0</div>
+        </div>
+
+        <p style="margin-top:1.4rem"><a class="btn" href="index.html">Return Home</a></p>
+      </section>
+    </main>
+
+    <script>
+      /*
+        Edit the `questions` array below to change Level 1 content.
+        Each entry: { encrypted: string, answer: string, hint: string (optional), explanation: string (optional) }
+      */
+      const questions = [
+        { encrypted: 'GH ZKHBD', hint: '+1', answer: 'HI ALICE', explanation: "They are always chatting. I'm jealous." },
+        { encrypted: 'FAI LOFAVFAE YFAOU', hint: '', answer: 'I LOVE YOU', explanation: "Oh no! Bob loves Alice. I want to steal Bob from Alice." },
+        { encrypted: 'RVBOUVN', hint: '-1', answer: 'QUANTUM', explanation: "Bob is interested in quantum information. I need to learn more about it." }
+      ];
+
+      // Simple utilities for normalising answers for comparison
+      function normalise(s){
+        return s.toUpperCase().replace(/[^A-Z0-9 ]+/g,'').replace(/\s+/g,' ').trim();
+      }
+
+      // Wait for DOM to be ready
+      document.addEventListener('DOMContentLoaded', function() {
+        // UI elements
+        const encryptedEl = document.getElementById('encrypted');
+        const hintLine = document.getElementById('hintline');
+        const answerInput = document.getElementById('answer');
+        const submitBtn = document.getElementById('submit');
+        const hintBtn = document.getElementById('hint');
+        const giveupBtn = document.getElementById('giveup');
+        const nextBtn = document.getElementById('next');
+        const confirmGiveupDiv = document.getElementById('confirm-giveup');
+        const confirmYesBtn = document.getElementById('confirm-yes');
+        const confirmNoBtn = document.getElementById('confirm-no');
+        const feedback = document.getElementById('feedback');
+        const explanation = document.getElementById('explanation');
+        const scoreEl = document.getElementById('score');
+
+        console.log('giveupBtn:', giveupBtn);
+        console.log('All buttons loaded');
+
+        let idx = 0; let correctCount = 0; let attemptCount = 0; let answered = false;
+
+        // Save progress to localStorage
+        function saveProgress() {
+          const progress = {
+            idx: idx,
+            correctCount: correctCount,
+            attemptCount: attemptCount,
+            answered: answered
+          };
+          localStorage.setItem('level1Progress', JSON.stringify(progress));
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+          const saved = localStorage.getItem('level1Progress');
+          if(saved) {
+            const progress = JSON.parse(saved);
+            idx = progress.idx;
+            correctCount = progress.correctCount;
+            attemptCount = progress.attemptCount;
+            answered = progress.answered;
+          }
+        }
+
+      function loadQuestion(i){
+        const q = questions[i];
+        encryptedEl.textContent = q.encrypted;
+        hintLine.textContent = q.hint ? `Hint: ${q.hint}` : '';
+        hintLine.style.display = 'none';
+        answerInput.value = '';
+        feedback.textContent = '';
+        explanation.textContent = '';
+        confirmGiveupDiv.style.display = 'none';
+        nextBtn.style.display = 'none';
+        giveupBtn.disabled = false;
+        submitBtn.disabled = false;
+        answered = false;
+        answerInput.focus();
+        scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
+      }
+
+      function checkAnswer(){
+        if(answered) return;
+        const user = normalise(answerInput.value);
+        const expected = normalise(questions[idx].answer);
+        attemptCount++;
+        if(user === expected){
+          feedback.style.color = '#7ef27e';
+          feedback.textContent = 'Correct!';
+          correctCount++;
+          explanation.textContent = questions[idx].explanation || '';
+          answered = true;
+          giveupBtn.disabled = true;
+          submitBtn.disabled = true;
+          nextBtn.style.display = '';
+        } else {
+          feedback.style.color = '#ff9a9a';
+          feedback.textContent = 'Incorrect. Try again or give up to see the answer.';
+        }
+        scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
+        saveProgress();
+      }
+
+      submitBtn.addEventListener('click', checkAnswer);
+      answerInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') checkAnswer(); });
+
+      hintBtn.addEventListener('click', ()=>{
+        const q = questions[idx];
+        if(q.hint){
+          hintLine.style.display = hintLine.style.display === 'none' ? 'block' : 'none';
+        } else {
+          alert('No hint available for this question.');
+        }
+      });
+
+      giveupBtn.addEventListener('click', ()=>{
+        console.log('Give up clicked, answered:', answered);
+        if(answered) return;
+        // Show inline confirmation
+        confirmGiveupDiv.style.display = 'block';
+      });
+
+      confirmYesBtn.addEventListener('click', ()=>{
+        feedback.style.color = '#ffb347';
+        feedback.textContent = `You gave up. The answer was: ${questions[idx].answer}`;
+        explanation.textContent = questions[idx].explanation || '';
+        answered = true;
+        giveupBtn.disabled = true;
+        submitBtn.disabled = true;
+        attemptCount++;
+        scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
+        confirmGiveupDiv.style.display = 'none';
+        nextBtn.style.display = '';
+        saveProgress();
+      });
+
+      confirmNoBtn.addEventListener('click', ()=>{
+        confirmGiveupDiv.style.display = 'none';
+      });
+
+      nextBtn.addEventListener('click', ()=>{
+        idx = (idx + 1) % questions.length;
+        loadQuestion(idx);
+        saveProgress();
+      });
+
+      // Load saved progress on page load
+      loadProgress();
+      // Initial load
+      loadQuestion(idx);
+      }); // End DOMContentLoaded
+    </script>
+
+    <footer>
+      CCST9077 | Members:
+    </footer>
+
+    <div id="settings-btn">⚙️</div>
+    <div id="settings-menu">
+      <div id="1option" class="option">Option 1</div>
+      <div id="2option" class="option">Option 2</div>
+    </div>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">Hello! I'm a placeholder!</div>
+    </div>
+  </body>
+</html>
+
+<script>
+  const btn = document.getElementById("settings-btn");
+  const menu = document.getElementById("settings-menu");
+  const oneOption = document.getElementById("1option");
+  const twoOption = document.getElementById("2option");
+
+  let menuOpen = false;
+
+  btn.onclick = () => {
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? "block" : "none";
+  };
+</script>
