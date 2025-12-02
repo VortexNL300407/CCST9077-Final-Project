@@ -147,6 +147,16 @@
     <footer>
       &copy; CCST9077 | Members :
     </footer>
+
+    <div id="settings-btn">⚙️</div>
+    <div id="settings-menu">
+      <div id="mute-option" class="option">Mute Music</div>
+      <div id="theme-option" class="option">Another Option</div>
+    </div>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">Hello! I'm a placeholder!</div>
+    </div>
     <!-- Levels slide-out tab -->
     <div id="levels-tab" title="Open levels">Levels</div>
     <aside id="levels-sidebar" aria-hidden="true">
@@ -155,7 +165,7 @@
       <ul class="levels-list">
         <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
         <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
-        <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
+        <li><a href="level3.1.html">Level 3 — QKD Simulation</a></li>
       </ul>
     </aside>
 
@@ -461,7 +471,7 @@
 
         continueBtn.addEventListener('click', ()=>{
           // Optionally could pass data via query params/localStorage
-          window.location.href = 'level3.html';
+          window.location.href = 'level3.1.html';
         });
 
         backLevelsBtn.addEventListener('click', ()=>{
@@ -474,4 +484,33 @@
       })();
     </script>
   </body>
+
+  <!-- Audio element for background music -->
+  <audio id="bgm" src="media/bgm.mp3" loop></audio>
+
+  <!-- BACKGROUND MUSIC SYSTEM - INSERT/REMOVE THIS BLOCK AS NEEDED -->
+  <script>
+    (function(){
+      const bgm = document.getElementById('bgm');
+      const btn = document.getElementById('settings-btn');
+      const menu = document.getElementById('settings-menu');
+      const muteOption = document.getElementById('mute-option');
+      let menuOpen = false;
+
+      let savedMuted = localStorage.getItem('musicMuted') === 'true';
+      let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
+      bgm.muted = savedMuted;
+      bgm.currentTime = savedTime;
+
+      window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
+      bgm.volume = 0.2; bgm.muted = savedMuted; bgm.play().catch(()=>{});
+
+      setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
+
+      btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
+      muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
+      muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
+    })();
+  </script>
+  <!-- END BACKGROUND MUSIC SYSTEM -->
 </html>
