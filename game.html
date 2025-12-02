@@ -293,7 +293,6 @@
         border-radius: 5px;
         background: rgba(87, 172, 246, 0.2);
         outline: none;
-        -webkit-appearance: none;
       }
 
       #wheel-shift::-webkit-slider-thumb {
@@ -417,9 +416,9 @@
         Each entry: { encrypted: string, answer: string, hint: string (optional), explanation: string (optional) }
       */
       const questions = [
+        { encrypted: 'RVBOUVN', hint: 'Shift: -1', answer: 'QUANTUM', explanation: "Bob is interested in quantum information. I need to learn more about it." },
         { encrypted: 'GH ZKHBD', hint: 'Shift: +1', answer: 'HI ALICE', explanation: "They are always chatting. I'm jealous." },
         { encrypted: 'P SVCL FVB', hint: 'This is the last question! Try to answer yourself, if you love Bob!', answer: 'I LOVE YOU', explanation: "Oh no! Bob loves Alice. I want to steal Bob from Alice." },
-        { encrypted: 'RVBOUVN', hint: 'Shift: -1', answer: 'QUANTUM', explanation: "Bob is interested in quantum information. I need to learn more about it." }
       ];
 
       // Simple utilities for normalising answers for comparison

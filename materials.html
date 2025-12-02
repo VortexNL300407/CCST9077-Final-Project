@@ -5,10 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Quantum Cryptography - Materials</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+      /* Add background image styling */
+      main.page {
+        position: relative;
+        background-image: url('media/quantum.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        overflow-x: hidden;
+      }
+      
+      /* Add overlay to improve text readability */
+      main.page::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(10, 15, 30, 0.88);
+        z-index: 0;
+      }
+      
+      /* Ensure content is above the overlay */
+      main.page > * {
+        position: relative;
+        z-index: 1;
+      }
+      
+      /* Caesar Cipher Wheel Styles */
+      #caesar-wheel-svg text { 
+        font-family: system-ui, sans-serif; 
+        font-size: 14px; 
+        dominant-baseline: middle; 
+        text-anchor: middle; 
+        fill: #fff; 
+      }
+      #caesar-wheel-svg circle { 
+        fill: none; 
+        stroke: rgba(255,255,255,0.25); 
+      }
+      
+      /* Range slider styling for Caesar wheel */
+      #caesar-shift::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00ffff, #57acf6);
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+
+      #caesar-shift::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00ffff, #57acf6);
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+    </style>
   </head>
   <body>
     <header>
-      <h1>Quantum Cryptography</h1>
+      <!-- Inline SVG logo -->
+      <div class="logo" aria-hidden="false" style="display:inline-block; vertical-align:middle; margin-bottom:0.4rem;">
+        <svg width="60" height="60" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Site logo">
+          <rect width="64" height="64" rx="10" fill="#1b2740" />
+          <circle cx="32" cy="24" r="12" fill="#57acf6" />
+          <text x="32" y="38" font-size="18" text-anchor="middle" fill="#fff" font-family="Verdana,Arial" font-weight="700">Q</text>
+        </svg>
+      </div>
+      <h1 style="display:inline-block; margin-left:0.6rem; vertical-align:middle;">Quantum Cryptography</h1>
       <p><em>Cryptography of the future</em></p>
       <nav>
         <a href="index.html">Home</a>
@@ -20,7 +92,77 @@
     <main class="page">
       <!-- Combined Materials: Level 2 Superposition + Entanglement -->
       <section class="card" id="materials-combined">
-        <h2 style="text-align:center; margin-top:0;">Materials — Superposition & Entanglement</h2>
+        <!-- Caesar Cipher Section -->
+        <h2 style="text-align:center; margin-top:0;">Materials — Caesar Cipher</h2>
+        
+        <div style="max-width:900px; margin:1rem auto; color:#dbe7ff; line-height:1.6;">
+          <h3>What is Caesar Cipher?</h3>
+          <p>The Caesar Cipher is one of the oldest and simplest encryption techniques. Named after Julius Caesar, who used it to protect his military messages, this cipher works by shifting each letter in the plaintext by a fixed number of positions in the alphabet.</p>
+
+          <h3>How Caesar Cipher Works</h3>
+          <ol>
+            <li><strong>Choose a shift value</strong> (also called the "key") — for example, a shift of 3.</li>
+            <li><strong>Replace each letter</strong> in your message by moving it forward (or backward) in the alphabet by the shift amount.</li>
+            <li>For example, with a shift of +3:
+              <ul style="margin-top:0.5rem;">
+                <li>A → D</li>
+                <li>B → E</li>
+                <li>C → F</li>
+                <li>... and so on</li>
+              </ul>
+            </li>
+            <li><strong>To decrypt</strong>, simply reverse the process by shifting backwards by the same amount.</li>
+          </ol>
+
+          <h3>Example</h3>
+          <div style="background:rgba(10,18,30,0.25); padding:1rem; border-radius:6px; margin:1rem 0;">
+            <p style="margin:0.5rem 0;"><strong>Plaintext:</strong> HELLO</p>
+            <p style="margin:0.5rem 0;"><strong>Shift:</strong> +3</p>
+            <p style="margin:0.5rem 0;"><strong>Ciphertext:</strong> KHOOR</p>
+          </div>
+
+          <h3>Interactive Cipher Wheel</h3>
+          <p>Below is a Caesar cipher wheel that lets you visualize how the encryption works. The inner ring shows the original alphabet (plaintext), and the outer ring shows the shifted alphabet (ciphertext). Adjust the shift slider to see how different shift values transform the letters.</p>
+        </div>
+
+        <!-- Cipher Wheel -->
+        <div id="caesar-wheel-container" style="max-width:900px; margin:1.2rem auto; background:rgba(10,18,30,0.25); padding:1.5rem; border-radius:6px;">
+          <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; justify-content: center;">
+            <svg id="caesar-wheel-svg" viewBox="0 0 260 260" width="260" height="260" role="img" aria-label="Caesar cipher wheel" style="width:260px; height:260px;">
+              <!-- SVG content will be generated by JavaScript -->
+            </svg>
+            <div style="flex:1; min-width:250px;">
+              <div style="color:#57acf6; font-weight:bold; font-size:1.1rem; margin-bottom:0.6rem;">Cipher Wheel Shift</div>
+              <div style="font-size:0.9rem; opacity:0.9; margin-bottom:0.6rem;">Rotate the outer ring to align plaintext with ciphertext</div>
+              <label for="caesar-shift" style="color: #57acf6; font-weight: bold; display:block; margin-bottom:0.4rem;">
+                Shift: <span id="caesar-shift-label" style="color:#00ffff; font-size:1.5rem; font-weight:bold; text-shadow:0 0 10px rgba(0,255,255,0.5);">0</span>
+              </label>
+              <input id="caesar-shift" type="range" min="-25" max="25" step="1" value="0" style="width:100%; height:8px; border-radius:5px; background:rgba(87,172,246,0.2); outline:none;">
+              <div style="margin-top:1rem; padding:1rem; background:rgba(0,255,255,0.1); border-left:4px solid #00ffff; border-radius:6px;">
+                <div style="font-weight:bold; margin-bottom:0.5rem;">Try it out:</div>
+                <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+                  <div style="flex:1; min-width:150px;">
+                    <label style="display:block; margin-bottom:0.3rem; font-size:0.9rem; opacity:0.9;">Plaintext Word:</label>
+                    <input id="plain-letter" type="text" maxlength="5" placeholder="HELLO" value="HELLO" style="width:100%; padding:0.5rem; background:rgba(10,15,36,0.8); border:2px solid rgba(0,255,255,0.4); color:#fff; font-family:'Courier New',monospace; font-size:1.2rem; border-radius:6px; text-align:center; box-sizing:border-box;">
+                  </div>
+                  <div style="color:#00ffff; font-size:1.5rem; padding-top:1.5rem;">→</div>
+                  <div style="flex:1; min-width:150px;">
+                    <label style="display:block; margin-bottom:0.3rem; font-size:0.9rem; opacity:0.9;">Encrypted Word:</label>
+                    <div id="cipher-letter" style="width:100%; padding:0.5rem; background:rgba(0,255,255,0.05); border:2px solid rgba(0,255,255,0.4); color:#00ffff; font-family:'Courier New',monospace; font-size:1.2rem; border-radius:6px; text-align:center; font-weight:bold; box-sizing:border-box; min-height:2.4rem;">HELLO</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="max-width:900px; margin:1rem auto; color:#dbe7ff; line-height:1.6;">
+          <h3>Strengths and Weaknesses</h3>
+          <p><strong>Strengths:</strong> The Caesar cipher is simple to use and understand, making it great for learning about encryption basics.</p>
+          <p><strong>Weaknesses:</strong> With only 25 possible shifts, it's extremely vulnerable to brute-force attacks. An attacker can easily try all possible keys. Additionally, frequency analysis can reveal patterns in the encrypted text, making it easy to crack.</p>
+      
+
+        <h2 style="text-align:center; margin-top:2rem;">Materials — Superposition & Entanglement</h2>
 
 
         <!-- Superposition demo (copied from level2 materials) -->
@@ -270,6 +412,142 @@
           closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
           document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
         }
+      })();
+    </script>
+
+    <!-- Caesar Cipher Wheel Script -->
+    <script>
+      (function(){
+        const wheelSvg = document.getElementById('caesar-wheel-svg');
+        const wheelShiftInput = document.getElementById('caesar-shift');
+        const wheelShiftLabel = document.getElementById('caesar-shift-label');
+        const plainLetterInput = document.getElementById('plain-letter');
+        const cipherLetterEl = document.getElementById('cipher-letter');
+        
+        if(!wheelSvg) return;
+        
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+        let wheelOuterGroup = null;
+        let wheelInnerGroup = null;
+        const cx = 130, cy = 130, rInner = 80, rOuter = 110;
+        const stepDeg = 360 / 26;
+        
+        let currentOuterAngle = 0;
+        let animFrame = null;
+        
+        function createSVGEl(name, attrs = {}) {
+          const el = document.createElementNS(SVG_NS, name);
+          for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+          return el;
+        }
+        
+        function buildCipherWheel() {
+          wheelSvg.innerHTML = '';
+          
+          // Background rings
+          wheelSvg.appendChild(createSVGEl('circle', { cx, cy, r: rOuter + 8 }));
+          wheelSvg.appendChild(createSVGEl('circle', { cx, cy, r: rInner - 8 }));
+          
+          wheelInnerGroup = createSVGEl('g', { class: 'inner-ring' });
+          wheelOuterGroup = createSVGEl('g', { class: 'outer-ring' });
+          
+          for (let i = 0; i < 26; i++) {
+            const letter = String.fromCharCode(65 + i);
+            const angle = (i / 26) * 2 * Math.PI - Math.PI / 2;
+            
+            const xi = cx + rInner * Math.cos(angle);
+            const yi = cy + rInner * Math.sin(angle);
+            const xo = cx + rOuter * Math.cos(angle);
+            const yo = cy + rOuter * Math.sin(angle);
+            
+            const tInner = createSVGEl('text', { x: xi, y: yi });
+            tInner.textContent = letter;
+            const tOuter = createSVGEl('text', { x: xo, y: yo });
+            tOuter.textContent = letter;
+            
+            wheelInnerGroup.appendChild(tInner);
+            wheelOuterGroup.appendChild(tOuter);
+          }
+          
+          wheelSvg.appendChild(wheelInnerGroup);
+          wheelSvg.appendChild(wheelOuterGroup);
+          currentOuterAngle = 0;
+          wheelOuterGroup.setAttribute('transform', `rotate(${currentOuterAngle} ${cx} ${cy})`);
+        }
+        
+        function setWheelShift(s, animate = true) {
+          if (!wheelOuterGroup) return;
+          const targetAngle = s * stepDeg;
+          wheelShiftLabel.textContent = s >= 0 ? `+${s}` : `${s}`;
+          
+          if (!animate) {
+            if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+            currentOuterAngle = targetAngle;
+            wheelOuterGroup.setAttribute('transform', `rotate(${currentOuterAngle} ${cx} ${cy})`);
+            return;
+          }
+          
+          // Smooth animation
+          const startAngle = currentOuterAngle;
+          const delta = targetAngle - startAngle;
+          const duration = 400;
+          const startTime = performance.now();
+          
+          if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+          
+          function step(t) {
+            const k = Math.min(1, (t - startTime) / duration);
+            const eased = 1 - Math.pow(1 - k, 3);
+            const angle = startAngle + delta * eased;
+            wheelOuterGroup.setAttribute('transform', `rotate(${angle} ${cx} ${cy})`);
+            if (k < 1) animFrame = requestAnimationFrame(step);
+            else { currentOuterAngle = targetAngle; animFrame = null; }
+          }
+          animFrame = requestAnimationFrame(step);
+        }
+        
+        function encryptLetter(letter, shift) {
+          const code = letter.charCodeAt(0);
+          if (code >= 65 && code <= 90) { // A-Z
+            return String.fromCharCode(((code - 65 + shift + 26) % 26) + 65);
+          } else if (code >= 97 && code <= 122) { // a-z
+            return String.fromCharCode(((code - 97 + shift + 26) % 26) + 97);
+          }
+          return letter;
+        }
+        
+        function encryptWord(word, shift) {
+          return word.split('').map(letter => encryptLetter(letter, shift)).join('');
+        }
+        
+        function updateCipherLetter() {
+          const plain = plainLetterInput.value.toUpperCase();
+          const shift = parseInt(wheelShiftInput.value, 10) || 0;
+          
+          if (plain.length > 0 && /^[A-Z]+$/.test(plain)) {
+            cipherLetterEl.textContent = encryptWord(plain, shift);
+          } else if (plain.length === 0) {
+            cipherLetterEl.textContent = '-';
+          } else {
+            cipherLetterEl.textContent = 'Letters only';
+          }
+        }
+        
+        wheelShiftInput.addEventListener('input', () => {
+          const s = parseInt(wheelShiftInput.value, 10) || 0;
+          setWheelShift(s, true);
+          updateCipherLetter();
+        });
+        
+        plainLetterInput.addEventListener('input', () => {
+          plainLetterInput.value = plainLetterInput.value.toUpperCase();
+          updateCipherLetter();
+        });
+        
+        // Build the wheel on load
+        buildCipherWheel();
+        // Initialize with HELLO
+        updateCipherLetter();
       })();
     </script>
 
@@ -749,4 +1027,42 @@
     })();
   </script>
   <!-- END BACKGROUND MUSIC SYSTEM -->
+
+  <!-- PARALLAX EFFECT SCRIPT -->
+  <script>
+    (function(){
+      const page = document.querySelector('main.page');
+      if(!page) return;
+      
+      let ticking = false;
+      const parallaxSpeed = -0.025;
+      
+      // Calculate initial offset to prevent jump
+      const initialScroll = window.pageYOffset;
+      const initialOffset = initialScroll * parallaxSpeed;
+      
+      function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const offset = scrolled * parallaxSpeed;
+        
+        // Apply offset relative to initial position
+        page.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+        
+        ticking = false;
+      }
+      
+      function requestTick() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+      
+      // Set initial position
+      page.style.backgroundPositionY = `calc(50% + ${initialOffset}px)`;
+      
+      window.addEventListener('scroll', requestTick, { passive: true });
+    })();
+  </script>
+  <!-- END PARALLAX EFFECT SCRIPT -->
 </html>
