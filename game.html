@@ -350,8 +350,8 @@
 
     <div id="settings-btn">⚙️</div>
     <div id="settings-menu">
-      <div id="1option" class="option">Option 1</div>
-      <div id="2option" class="option">Option 2</div>
+      <div id="mute-option" class="option">Mute Music</div>
+      <div id="theme-option" class="option">Another Option</div>
     </div>
     <div id="info-container">
       <div id="info-icon">ℹ</div>
@@ -368,32 +368,63 @@
         <li><a href="level3_materials.html">Level 3 — QKD Materials</a></li>
       </ul>
     </aside>
+
+    <script>
+      const btn = document.getElementById("settings-btn");
+      const menu = document.getElementById("settings-menu");
+      const oneOption = document.getElementById("1option");
+      const twoOption = document.getElementById("2option");
+
+      let menuOpen = false;
+
+      btn.onclick = () => {
+        menuOpen = !menuOpen;
+        menu.style.display = menuOpen ? "block" : "none";
+      };
+    </script>
+    <script>
+      // Levels sidebar toggle (shared behaviour)
+      (function(){
+        const tab = document.getElementById('levels-tab');
+        const sidebar = document.getElementById('levels-sidebar');
+        const closeBtn = document.getElementById('levels-close');
+        if(tab && sidebar){
+          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+        }
+      })();
+    </script>
+
+    <!-- Audio element for background music -->
+    <audio id="bgm" src="media/bgm.mp3" loop></audio>
+
+    <!-- BACKGROUND MUSIC SYSTEM - INSERT/REMOVE THIS BLOCK AS NEEDED -->
+    <script>
+      (function(){
+        const bgm = document.getElementById('bgm');
+        const btn = document.getElementById('settings-btn');
+        const menu = document.getElementById('settings-menu');
+        const muteOption = document.getElementById('mute-option');
+        let menuOpen = false;
+
+        let savedMuted = localStorage.getItem('musicMuted') === 'true';
+        let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
+        if(bgm){
+          bgm.muted = savedMuted;
+          bgm.currentTime = savedTime;
+
+          window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
+          bgm.volume = 0.2; bgm.muted = savedMuted; bgm.play().catch(()=>{});
+
+          setInterval(()=>{ try{ localStorage.setItem('musicTime', bgm.currentTime); }catch(e){} }, 1000);
+
+          btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
+          if(muteOption) muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
+          if(muteOption) muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
+        }
+      })();
+    </script>
+    <!-- END BACKGROUND MUSIC SYSTEM -->
   </body>
 </html>
-
-<script>
-  const btn = document.getElementById("settings-btn");
-  const menu = document.getElementById("settings-menu");
-  const oneOption = document.getElementById("1option");
-  const twoOption = document.getElementById("2option");
-
-  let menuOpen = false;
-
-  btn.onclick = () => {
-    menuOpen = !menuOpen;
-    menu.style.display = menuOpen ? "block" : "none";
-  };
-</script>
-<script>
-  // Levels sidebar toggle (shared behaviour)
-  (function(){
-    const tab = document.getElementById('levels-tab');
-    const sidebar = document.getElementById('levels-sidebar');
-    const closeBtn = document.getElementById('levels-close');
-    if(tab && sidebar){
-      tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
-      closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
-      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
-    }
-  })();
-</script>
