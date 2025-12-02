@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Quantum Cryptography - Level 3</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+      /* Add background image styling */
+      body {
+        position: relative;
+        background-image: url('/media/game3.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        overflow-x: hidden;
+      }
+      
+      /* Add overlay to improve text readability */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(10, 15, 30, 0.88);
+        z-index: -1;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -169,10 +193,69 @@
     })();
   </script>
   <!-- END BACKGROUND MUSIC SYSTEM -->
-</html>
 
-<script>
-  // BB84 Protocol Game Logic for Level 1
+  <!-- PARALLAX EFFECT SCRIPT -->
+  <script>
+    (function(){
+      const body = document.body;
+      if(!body) return;
+      
+      // Set initial background position to 0
+      body.style.backgroundPositionY = '0px';
+      
+      let ticking = false;
+      
+      function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const parallaxSpeed = -0.05;
+        
+        body.style.backgroundPositionY = `${scrolled * parallaxSpeed}px`;
+        
+        ticking = false;
+      }
+      
+      function requestTick() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+      
+      window.addEventListener('scroll', requestTick, { passive: true });
+    })();
+  </script>
+  <!-- END PARALLAX EFFECT SCRIPT -->
+
+  <!-- Audio element for background music -->
+  <audio id="bgm" src="media/bgm.mp3" loop></audio>
+
+  <!-- BACKGROUND MUSIC SYSTEM - INSERT/REMOVE THIS BLOCK AS NEEDED -->
+  <script>
+    (function(){
+      const bgm = document.getElementById('bgm');
+      const btn = document.getElementById('settings-btn');
+      const menu = document.getElementById('settings-menu');
+      const muteOption = document.getElementById('mute-option');
+      let menuOpen = false;
+
+      let savedMuted = localStorage.getItem('musicMuted') === 'true';
+      let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
+      bgm.muted = savedMuted;
+      bgm.currentTime = savedTime;
+
+      window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
+      bgm.volume = 0.2; bgm.muted = savedMuted; bgm.play().catch(()=>{});
+
+      setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
+
+      btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
+      muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
+      muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
+    })();
+  </script>
+  <!-- END BACKGROUND MUSIC SYSTEM -->
+
+  <!-- BB84 Protocol Game Logic for Level 1
   class BB84GameLevel1 {
     constructor() {
       this.numParticles = 5;
@@ -423,33 +506,3 @@
     }
   });
 </script>
-
-  <!-- Audio element for background music -->
-  <audio id="bgm" src="media/bgm.mp3" loop></audio>
-
-  <!-- BACKGROUND MUSIC SYSTEM - INSERT/REMOVE THIS BLOCK AS NEEDED -->
-  <script>
-    (function(){
-      const bgm = document.getElementById('bgm');
-      const btn = document.getElementById('settings-btn');
-      const menu = document.getElementById('settings-menu');
-      const muteOption = document.getElementById('mute-option');
-      let menuOpen = false;
-
-      let savedMuted = localStorage.getItem('musicMuted') === 'true';
-      let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
-      bgm.muted = savedMuted;
-      bgm.currentTime = savedTime;
-
-      window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
-      bgm.volume = 0.2; bgm.muted = savedMuted; bgm.play().catch(()=>{});
-
-      setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
-
-      btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
-      muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
-      muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
-    })();
-  </script>
-  <!-- END BACKGROUND MUSIC SYSTEM -->
-</html>

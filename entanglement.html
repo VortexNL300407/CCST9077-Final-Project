@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Level 2 — Quantum Entanglement</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+      /* Add background image styling */
+      body {
+        position: relative;
+        background-image: url('/media/game2.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        overflow-x: hidden;
+      }
+      
+      /* Add overlay to improve text readability */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(10, 15, 30, 0.88);
+        z-index: -1;
+      }
+
+    </style>
   </head>
   <body>
     <header>
@@ -190,4 +215,42 @@
     })();
   </script>
   <!-- END BACKGROUND MUSIC SYSTEM -->
+
+  <!-- PARALLAX EFFECT SCRIPT -->
+  <script>
+    (function(){
+      const body = document.body;
+      if(!body) return;
+      
+      let ticking = false;
+      const parallaxSpeed = -0.05;
+      
+      // Calculate initial offset to prevent jump
+      const initialScroll = window.pageYOffset;
+      const initialOffset = initialScroll * parallaxSpeed;
+      
+      function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const offset = scrolled * parallaxSpeed;
+        
+        // Apply offset relative to initial position
+        body.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+        
+        ticking = false;
+      }
+      
+      function requestTick() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+      
+      // Set initial position
+      body.style.backgroundPositionY = `calc(50% + ${initialOffset}px)`;
+      
+      window.addEventListener('scroll', requestTick, { passive: true });
+    })();
+  </script>
+  <!-- END PARALLAX EFFECT SCRIPT -->
 </html>
