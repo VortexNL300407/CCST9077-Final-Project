@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Level 3 — QKD Simulation (BB84)</title>
+    <title>Quantum Cryptography - Game</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -21,7 +21,7 @@
       <section class="card">
         <h2>Level 3 - The BB84 Protocol</h2>
         <p>Help Eve eavesdrop on Alice and Bob's quantum key exchange using the BB84 protocol!</p>
-
+        
         <div id="game-container">
           <!-- Title Screen -->
           <div id="title-screen" class="card" style="text-align: center; padding: 1.5rem;">
@@ -111,18 +111,6 @@
       CCST9077 | Members:
     </footer>
 
-    <!-- Levels slide-out tab -->
-    <div id="levels-tab" title="Open levels">Levels</div>
-    <aside id="levels-sidebar" aria-hidden="true">
-      <button id="levels-close" class="btn btn-outline">Close</button>
-      <h3>Levels</h3>
-      <ul class="levels-list">
-        <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
-        <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
-        <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
-      </ul>
-    </aside>
-
     <div id="settings-btn">⚙️</div>
     <div id="settings-menu">
       <div id="1option" class="option">Option 1</div>
@@ -132,21 +120,10 @@
       <div id="info-icon">ℹ</div>
       <div id="info-popup">Hello! I'm a placeholder!</div>
     </div>
+  </body>
+</html>
 
-    <script>
-      (function(){
-        const tab = document.getElementById('levels-tab');
-        const sidebar = document.getElementById('levels-sidebar');
-        const closeBtn = document.getElementById('levels-close');
-        if(tab && sidebar){
-          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
-          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
-          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
-        }
-      })();
-    </script>
-
-    <script>
+<script>
   // BB84 Protocol Game Logic
   class BB84Game {
     constructor() {
@@ -234,6 +211,23 @@
   function renderFakeBits() {
     const container = document.getElementById('fake-bits-display');
     container.innerHTML = '';
+
+    for(let i = 0; i < game.numParticles; i++) {
+      const card = document.createElement('div');
+      card.className = 'particle-card';
+      card.innerHTML = `
+        <div class="particle-number">Particle ${i + 1}</div>
+        <div class="particle-basis">${game.aliceBases[i] === 0 ? '┃' : '╱'}</div>
+        <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.3rem;">${game.aliceBases[i] === 0 ? '90°' : '45°'}</div>
+        <div class="particle-value">${game.aliceValues[i]}</div>
+      `;
+      container.appendChild(card);
+    }
+  }
+
+  function renderFakeBits() {
+    const container = document.getElementById('fake-bits-display');
+    container.innerHTML = '';
     // Start with random bases, not Alice's bases
     game.eveSentBases = Array.from({length: game.numParticles}, () => Math.random() < 0.5 ? 0 : 1);
 
@@ -269,8 +263,7 @@
   document.getElementById('submit-phase1').addEventListener('click', () => {
     // Check if Eve has measured all particles
     if(game.eveMeasurements.length !== game.numParticles) {
-      const feedbackEl = document.getElementById('fake-bits-feedback');
-      if(feedbackEl) feedbackEl.innerHTML = '<p style="color:#ffd36a;">You must measure all particles first!</p>';
+      alert('You must measure all particles first!');
       return;
     }
 
@@ -287,6 +280,8 @@
     document.getElementById('instruction-text').textContent = 'Now, send fake quantum particles to Bob using the same measurement bases and bit values that you measured from Alice. Click each particle to toggle its measurement basis:';
     
     renderFakeBits();
+    
+    renderFakeBits();
   });
 
   document.getElementById('submit-fake-bits').addEventListener('click', () => {
@@ -300,6 +295,7 @@
     // Check if selections match what was intercepted
     let allCorrect = true;
     for(let i = 0; i < game.numParticles; i++) {
+      console.log(`Particle ${i}: eveSent=${game.eveSentBases[i]}, alice=${game.aliceBases[i]}`);
       if(game.eveSentBases[i] !== game.aliceBases[i]) {
         allCorrect = false;
         break;
@@ -469,4 +465,3 @@
     menu.style.display = menuOpen ? "block" : "none";
   };
 </script>
->>>>>>> 5af2858eddf90346eeeafa8961943602910c03b5
