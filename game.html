@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Quantum Cryptography - Game</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Add minimal inline styles for the cipher wheel -->
+    <style>
+      /* Cipher wheel */
+      #cipher-wheel-container { margin-top: 1rem; padding: 1rem; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; background: rgba(255,255,255,0.05); }
+      .cipher-wheel-svg { width: 260px; height: 260px; }
+      .cipher-wheel-svg text { font-family: system-ui, sans-serif; font-size: 14px; dominant-baseline: middle; text-anchor: middle; fill: #fff; }
+      .cipher-wheel-svg circle { fill: none; stroke: rgba(255,255,255,0.25); }
+      .cipher-wheel-svg .outer-ring { /* remove CSS-based transform control; keep class for styling if needed */ }
+      .cipher-wheel-svg .no-transition { /* no longer used; kept for compatibility */ }
+      .cipher-wheel-meta { font-size: 0.9rem; opacity: 0.9; }
+    </style>
   </head>
   <body>
     <header>
@@ -27,6 +38,19 @@
             <p><strong>Encrypted message:</strong></p>
             <div id="encrypted" class="encrypted">--</div>
             <p id="hintline" style="margin-top:0.6rem; display:none;"></p>
+          </div>
+
+          <!-- Cipher wheel UI -->
+          <div id="cipher-wheel-container" aria-label="Caesar cipher wheel">
+            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+              <svg id="cipher-wheel-svg" class="cipher-wheel-svg" viewBox="0 0 260 260" width="260" height="260" role="img" aria-label="Cipher wheel"></svg>
+              <div style="min-width:200px;">
+                <div style="font-weight:700; margin-bottom:0.4rem;">Cipher Wheel</div>
+                <div class="cipher-wheel-meta" style="margin-bottom:0.6rem;">Inner: Plaintext • Outer: Ciphertext</div>
+                <label for="wheel-shift">Shift: <span id="wheel-shift-label">0</span></label>
+                <input id="wheel-shift" type="range" min="-25" max="25" step="1" value="0" style="width:100%; margin-top:0.4rem;">
+              </div>
+            </div>
           </div>
 
           <div id="answer-area" style="margin-top:1rem;">
@@ -92,8 +116,114 @@
         const explanation = document.getElementById('explanation');
         const scoreEl = document.getElementById('score');
 
-        console.log('giveupBtn:', giveupBtn);
-        console.log('All buttons loaded');
+        // Cipher wheel elements
+        const wheelSvg = document.getElementById('cipher-wheel-svg');
+        const wheelShiftInput = document.getElementById('wheel-shift');
+        const wheelShiftLabel = document.getElementById('wheel-shift-label');
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+        let wheelOuterGroup = null;
+        let wheelInnerGroup = null;
+        const cx = 130, cy = 130, rInner = 80, rOuter = 110, stepDeg = 360 / 26;
+
+        // Track current rotation angle to animate between states
+        let currentOuterAngle = 0;
+        let animFrame = null;
+
+        function createSVGEl(name, attrs = {}) {
+          const el = document.createElementNS(SVG_NS, name);
+          for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+          return el;
+        }
+
+        function buildCipherWheel() {
+          if (!wheelSvg) return;
+          wheelSvg.innerHTML = '';
+
+          // Background rings
+          wheelSvg.appendChild(createSVGEl('circle', { cx, cy, r: rOuter + 8 }));
+          wheelSvg.appendChild(createSVGEl('circle', { cx, cy, r: rInner - 8 }));
+
+          wheelInnerGroup = createSVGEl('g', { class: 'inner-ring' });
+          wheelOuterGroup = createSVGEl('g', { class: 'outer-ring' });
+
+          for (let i = 0; i < 26; i++) {
+            const letter = String.fromCharCode(65 + i);
+            const angle = (i / 26) * 2 * Math.PI - Math.PI / 2;
+
+            const xi = cx + rInner * Math.cos(angle);
+            const yi = cy + rInner * Math.sin(angle);
+            const xo = cx + rOuter * Math.cos(angle);
+            const yo = cy + rOuter * Math.sin(angle);
+
+            const tInner = createSVGEl('text', { x: xi, y: yi });
+            tInner.textContent = letter;
+            const tOuter = createSVGEl('text', { x: xo, y: yo });
+            tOuter.textContent = letter;
+
+            wheelInnerGroup.appendChild(tInner);
+            wheelOuterGroup.appendChild(tOuter);
+          }
+
+          wheelSvg.appendChild(wheelInnerGroup);
+          wheelSvg.appendChild(wheelOuterGroup);
+          // Ensure starting transform is centered
+          currentOuterAngle = 0;
+          wheelOuterGroup.setAttribute('transform', `rotate(${currentOuterAngle} ${cx} ${cy})`);
+        }
+
+        function setWheelShift(s, animate = true) {
+          if (!wheelOuterGroup) return;
+          const targetAngle = s * stepDeg;
+          wheelShiftLabel.textContent = s >= 0 ? `+${s}` : `${s}`;
+
+          if (!animate) {
+            if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+            currentOuterAngle = targetAngle;
+            wheelOuterGroup.setAttribute('transform', `rotate(${currentOuterAngle} ${cx} ${cy})`);
+            return;
+          }
+
+          // Smooth animation via rAF
+          const startAngle = currentOuterAngle;
+          const delta = targetAngle - startAngle;
+          const duration = 400; // ms
+          const startTime = performance.now();
+
+          if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+
+          function step(t) {
+            const k = Math.min(1, (t - startTime) / duration);
+            const eased = 1 - Math.pow(1 - k, 3); // easeOutCubic
+            const angle = startAngle + delta * eased;
+            wheelOuterGroup.setAttribute('transform', `rotate(${angle} ${cx} ${cy})`);
+            if (k < 1) animFrame = requestAnimationFrame(step);
+            else { currentOuterAngle = targetAngle; animFrame = null; }
+          }
+          animFrame = requestAnimationFrame(step);
+        }
+
+        function parseHintShift(hint) {
+          if (typeof hint !== 'string' || hint.trim() === '') return null;
+          const val = parseInt(hint, 10);
+          return Number.isFinite(val) ? Math.max(-25, Math.min(25, val)) : null;
+        }
+
+        function updateWheelForQuestion() {
+          const q = questions[idx];
+          const s = parseHintShift(q.hint);
+          if (s !== null) {
+            wheelShiftInput.value = s;
+            setWheelShift(s, true);
+          } else {
+            wheelShiftInput.value = 0;
+            setWheelShift(0, false);
+          }
+        }
+
+        wheelShiftInput.addEventListener('input', () => {
+          const s = parseInt(wheelShiftInput.value, 10) || 0;
+          setWheelShift(s, true);
+        });
 
         let idx = 0; let correctCount = 0; let attemptCount = 0; let answered = false;
 
@@ -135,9 +265,8 @@
         answered = false;
         answerInput.focus();
         scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
-        // animate qbox entrance
-        const qbox = document.getElementById('qbox');
-        if(qbox){ qbox.classList.remove('animate-question'); void qbox.offsetWidth; qbox.classList.add('animate-question'); qbox.addEventListener('animationend', function aq(){ qbox.classList.remove('animate-question'); qbox.removeEventListener('animationend', aq); }); }
+        // Update wheel for this question (animate if hint present)
+        updateWheelForQuestion();
       }
 
       function checkAnswer(){
@@ -150,9 +279,6 @@
           feedback.textContent = 'Correct!';
           correctCount++;
           explanation.textContent = questions[idx].explanation || '';
-          // animate feedback & explanation
-          feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
-          explanation.classList.remove('animate-explain'); void explanation.offsetWidth; explanation.classList.add('animate-explain');
           answered = true;
           giveupBtn.disabled = true;
           submitBtn.disabled = true;
@@ -160,7 +286,6 @@
         } else {
           feedback.style.color = '#ff9a9a';
           feedback.textContent = 'Incorrect. Try again or give up to see the answer.';
-          feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
         }
         scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
         saveProgress();
@@ -172,12 +297,9 @@
       hintBtn.addEventListener('click', ()=>{
         const q = questions[idx];
         if(q.hint){
-          const showing = hintLine.style.display !== 'none';
-          hintLine.style.display = showing ? 'none' : 'block';
-          if(!showing){ hintLine.classList.remove('animate-in'); void hintLine.offsetWidth; hintLine.classList.add('animate-in'); hintLine.addEventListener('animationend', function ah(){ hintLine.classList.remove('animate-in'); hintLine.removeEventListener('animationend', ah); }); }
+          hintLine.style.display = hintLine.style.display === 'none' ? 'block' : 'none';
         } else {
-          feedback.style.color = '#ffd36a'; feedback.textContent = 'No hint available for this question.';
-          feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
+          alert('No hint available for this question.');
         }
       });
 
@@ -186,15 +308,12 @@
         if(answered) return;
         // Show inline confirmation
         confirmGiveupDiv.style.display = 'block';
-        confirmGiveupDiv.classList.remove('animate-eval'); void confirmGiveupDiv.offsetWidth; confirmGiveupDiv.classList.add('animate-eval');
       });
 
       confirmYesBtn.addEventListener('click', ()=>{
         feedback.style.color = '#ffb347';
         feedback.textContent = `You gave up. The answer was: ${questions[idx].answer}`;
         explanation.textContent = questions[idx].explanation || '';
-        feedback.classList.remove('animate-feedback'); void feedback.offsetWidth; feedback.classList.add('animate-feedback');
-        explanation.classList.remove('animate-explain'); void explanation.offsetWidth; explanation.classList.add('animate-explain');
         answered = true;
         giveupBtn.disabled = true;
         submitBtn.disabled = true;
@@ -214,6 +333,9 @@
         loadQuestion(idx);
         saveProgress();
       });
+
+      // Build the wheel once
+      buildCipherWheel();
 
       // Load saved progress on page load
       loadProgress();
@@ -235,30 +357,6 @@
       <div id="info-icon">ℹ</div>
       <div id="info-popup">Hello! I'm a placeholder!</div>
     </div>
-      <!-- Levels slide-out tab -->
-      <div id="levels-tab" title="Open levels">Levels</div>
-      <aside id="levels-sidebar" aria-hidden="true">
-        <button id="levels-close" class="btn btn-outline">Close</button>
-        <h3>Levels</h3>
-        <ul class="levels-list">
-          <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
-          <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
-          <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
-        </ul>
-      </aside>
-
-      <script>
-        (function(){
-          const tab = document.getElementById('levels-tab');
-          const sidebar = document.getElementById('levels-sidebar');
-          const closeBtn = document.getElementById('levels-close');
-          if(tab && sidebar){
-            tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
-            closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
-            document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
-          }
-        })();
-      </script>
   </body>
 </html>
 
