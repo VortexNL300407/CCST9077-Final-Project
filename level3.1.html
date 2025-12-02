@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quantum Cryptography - Level 3</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Quantum Cryptography</h1>
+      <p><em>Cryptography of the future</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <h2>Level 3 - First Eavesdropping Attempt</h2>
+        <p>Your first attempt to intercept Alice and Bob's quantum communication...</p>
+        
+        <div id="game-container">
+          <!-- Title Screen -->
+          <div id="title-screen" class="card" style="text-align: center; padding: 1.5rem;">
+            <h2>Welcome — First Eavesdropping</h2>
+            <p style="color: #dbe7ff; font-size: 1rem; max-width: 45rem; margin: 0.5rem auto 1rem;">
+              Alice and Bob are trying to communicate securely using the BB84 quantum key exchange protocol. I need to intercept their quantum particles to figure out their shared secret key. But there's a catch—I don't know which measurement bases they're using. Can I still eavesdrop successfully?
+            </p>
+            <p style="font-size: 0.95rem; color: #dbe7ff; margin-bottom: 1rem;">When you're ready, press Start to begin.</p>
+            <button id="start-level" class="btn">Start Level</button>
+          </div>
+
+          <!-- Main Game Interface (hidden until Start) -->
+          <div id="game-main" class="game-interface" style="display:none;">
+            
+            <!-- Instructions -->
+            <div id="instructions" class="instructions-box">
+              <h3 id="instruction-title">Phase 1: Blind Interception</h3>
+              <p id="instruction-text">Alice is sending quantum particles to Bob using random measurement bases (90° or 45°). You don't know which basis she's using for each particle, so you must guess! Measure each unopened bit with a random basis and see what values you can intercept.</p>
+            </div>
+
+            <!-- Two-column layout -->
+            <div class="game-columns">
+              
+              <!-- Left Column: Particle Interception -->
+              <div class="left-column">
+                <div id="particle-display" class="particle-grid">
+                  <!-- Particles will be generated here -->
+                </div>
+              </div>
+
+              <!-- Right Column: Info & Status -->
+              <div class="right-column">
+                <div id="phase-info" class="info-box">
+                  <h4>Status</h4>
+                  <p id="status-text">Particles measured: <strong id="particle-count">0/5</strong></p>
+                  <p style="font-size: 0.9rem; color: #dbe7ff; margin-top: 1rem;"><strong>Left Click</strong> to set 90° (┃) | <strong>Right Click</strong> to set 45° (╱)</p>
+                  <div style="margin-top: 1rem; padding: 0.8rem; background: rgba(87, 172, 246, 0.2); border-left: 3px solid #57acf6; border-radius: 4px; font-size: 0.9rem; color: #dbe7ff;">
+                    <strong>💡 Hint:</strong> Pick a random basis for each bit. You might get lucky!
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Control Buttons -->
+            <div id="control-buttons" style="margin-top: 1.5rem; text-align: center;">
+              <button id="submit-level1" class="btn">Submit Measurements</button>
+              <button id="submit-fake-bits" class="btn" style="display:none;">Send Fake Bits</button>
+              <button id="submit-basis-comparison" class="btn" style="display:none;">Continue</button>
+            </div>
+
+            <!-- Phase 1.5: Fake Bits Display -->
+            <div id="fake-bits-section" style="display:none;">
+              <div id="fake-bits-display" class="particle-grid">
+                <!-- Fake bits will be generated here -->
+              </div>
+            </div>
+
+            <!-- Phase 2: Basis Comparison -->
+            <div id="basis-comparison-section" style="display:none;">
+              <div id="basis-comparison" class="basis-grid">
+                <!-- Basis comparison will be generated here -->
+              </div>
+            </div>
+
+            <!-- Results/Story Screen -->
+            <div id="results-screen" style="display:none; text-align: center; padding: 2rem;">
+              <h3 style="color: #57acf6; font-size: 1.8rem;">Analysis Complete</h3>
+              <div id="results-text" style="color: #dbe7ff; font-size: 1rem; margin: 1.5rem 0; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;"></div>
+              <button id="proceed-level2" class="btn" style="margin-top: 2rem;">Proceed to Level 2</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      CCST9077 | Members:
+    </footer>
+
+    <div id="settings-btn">⚙️</div>
+    <div id="settings-menu">
+      <div id="1option" class="option">Option 1</div>
+      <div id="2option" class="option">Option 2</div>
+    </div>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">Hello! I'm a placeholder!</div>
+    </div>
+  </body>
+</html>
+
+<script>
+  // BB84 Protocol Game Logic for Level 1
+  class BB84GameLevel1 {
+    constructor() {
+      this.numParticles = 5;
+      this.aliceBases = []; // Alice's measurement bases (0=90deg, 1=45deg)
+      this.aliceValues = []; // The actual qubit values (0 or 1)
+      this.bobBases = []; // Bob's measurement bases
+      this.correctKey = []; // The final shared secret key
+      this.generateData();
+    }
+
+    generateData() {
+      // Generate random data for Alice
+      this.aliceBases = Array.from({length: this.numParticles}, () => Math.random() < 0.5 ? 0 : 1);
+      this.aliceValues = Array.from({length: this.numParticles}, () => Math.random() < 0.5 ? 0 : 1);
+      
+      // Generate random bases for Bob
+      this.bobBases = Array.from({length: this.numParticles}, () => Math.random() < 0.5 ? 0 : 1);
+      
+      // Calculate correct key (only where Alice and Bob bases match)
+      this.correctKey = [];
+      for(let i = 0; i < this.numParticles; i++) {
+        if(this.aliceBases[i] === this.bobBases[i]) {
+          this.correctKey.push(this.aliceValues[i]);
+        }
+      }
+    }
+
+    reset() {
+      this.generateData();
+    }
+  }
+
+  const game = new BB84GameLevel1();
+
+  // Track Eve's chosen bases for Level 1
+  let eveChosenBases = [];
+  let eveInterceptedValues = [];
+
+  // Phase 1: Display unopened bits and let Eve choose measurement bases
+  function renderPhase1() {
+    const container = document.getElementById('particle-display');
+    container.innerHTML = '';
+    
+    // Initialize Eve's chosen bases with random values
+    eveChosenBases = Array.from({length: game.numParticles}, () => Math.random() < 0.5 ? 0 : 1);
+    eveInterceptedValues = Array(game.numParticles).fill(null);
+
+    // Display unopened bits
+    for(let i = 0; i < game.numParticles; i++) {
+      const card = document.createElement('div');
+      card.className = 'particle-card';
+      card.dataset.index = i;
+      card.innerHTML = `
+        <div class="particle-number">Bit ${i + 1}</div>
+        <div class="particle-basis" style="color: #888; font-size: 1.2rem; height: 1.5rem; display: flex; align-items: center; justify-content: center;">${eveChosenBases[i] === 0 ? '┃' : '╱'}</div>
+        <div style="font-size: 0.7rem; color: #dbe7ff; margin-bottom: 0.3rem; height: 1rem; display: flex; align-items: center; justify-content: center;">${eveChosenBases[i] === 0 ? '90°' : '45°'}</div>
+        <div class="particle-value" style="color: #888; font-weight: bold; font-size: 1.2rem;">?</div>
+      `;
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => selectBasis(i, 0));
+      card.addEventListener('contextmenu', (e) => { e.preventDefault(); selectBasis(i, 1); });
+      container.appendChild(card);
+    }
+    
+    updateStatus();
+  }
+
+  function selectBasis(index, basis) {
+    eveChosenBases[index] = basis;
+    const card = document.querySelector(`[data-index="${index}"]`);
+    
+    if(card) {
+      const basisEl = card.querySelector('.particle-basis');
+      const degEl = basisEl.nextElementSibling;
+      const valueEl = card.querySelector('.particle-value');
+      
+      basisEl.textContent = basis === 0 ? '┃' : '╱';
+      degEl.textContent = basis === 0 ? '90°' : '45°';
+      
+      // In Level 1, any measurement is accepted and highlighted green
+      eveInterceptedValues[index] = game.aliceValues[index];
+      valueEl.textContent = game.aliceValues[index];
+      valueEl.style.color = '#7ef27e';
+      card.classList.add('selected');
+    }
+    
+    updateStatus();
+  }
+
+  function updateStatus() {
+    const measured = eveInterceptedValues.filter(v => v !== null).length;
+    document.getElementById('particle-count').textContent = `${measured}/${game.numParticles}`;
+  }
+
+  document.getElementById('submit-level1').addEventListener('click', () => {
+    const measured = eveInterceptedValues.filter(v => v !== null).length;
+    if(measured !== game.numParticles) {
+      alert('You must measure all 5 bits first!');
+      return;
+    }
+    moveToPhase1_5();
+  });
+
+  document.getElementById('submit-fake-bits').addEventListener('click', () => {
+    // Proceed to Phase 2
+    game.phase = 2;
+    document.getElementById('fake-bits-display').style.display = 'none';
+    document.getElementById('fake-bits-section').style.display = 'none';
+    document.getElementById('submit-fake-bits').style.display = 'none';
+    document.getElementById('basis-comparison').style.display = 'grid';
+    document.getElementById('basis-comparison-section').style.display = 'block';
+    document.getElementById('instruction-title').textContent = 'Phase 2: Compare Bases';
+    document.getElementById('instruction-text').textContent = 'Alice and Bob now publicly compare their bases (not the bit values). See where your bases matched!';
+    document.getElementById('submit-basis-comparison').style.display = 'inline-block';
+    
+    renderPhase2();
+  });
+
+  document.getElementById('submit-basis-comparison').addEventListener('click', () => {
+    showResults();
+  });
+
+  function moveToPhase1_5() {
+    game.phase = 1.5;
+    document.getElementById('submit-level1').style.display = 'none';
+    document.getElementById('particle-display').style.display = 'none';
+    document.getElementById('phase-info').style.display = 'none';
+    document.getElementById('fake-bits-display').style.display = 'grid';
+    document.getElementById('fake-bits-section').style.display = 'block';
+    document.getElementById('submit-fake-bits').style.display = 'inline-block';
+    
+    document.getElementById('instruction-title').textContent = 'Phase 1.5: Send Fake Bits to Bob';
+    document.getElementById('instruction-text').textContent = 'Now, send fake quantum particles to Bob using the same measurement bases and bit values that you intercepted.';
+    
+    renderFakeBits();
+  }
+
+  function renderFakeBits() {
+    const container = document.getElementById('fake-bits-display');
+    container.innerHTML = '';
+    // Initialize with the intercepted bases to start
+    if(!game.eveSentBases || game.eveSentBases.length === 0) {
+      game.eveSentBases = eveChosenBases.slice(); // Copy the bases Eve chose
+    }
+
+    for(let i = 0; i < game.numParticles; i++) {
+      const card = document.createElement('div');
+      card.className = 'particle-card';
+      card.dataset.index = i;
+      card.innerHTML = `
+        <div class="particle-number">Particle ${i + 1}</div>
+        <div class="particle-basis">${game.eveSentBases[i] === 0 ? '┃' : '╱'}</div>
+        <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.3rem;">${game.eveSentBases[i] === 0 ? '90°' : '45°'}</div>
+        <div class="particle-value">${eveInterceptedValues[i]}</div>
+      `;
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => setFakeBasis(i, 0));
+      card.addEventListener('contextmenu', (e) => { e.preventDefault(); setFakeBasis(i, 1); });
+      container.appendChild(card);
+    }
+  }
+
+  function setFakeBasis(index, basis) {
+    game.eveSentBases[index] = basis;
+    const card = document.querySelector(`#fake-bits-display [data-index="${index}"]`);
+    if(card) {
+      const basisEl = card.querySelector('.particle-basis');
+      const degEl = basisEl.nextElementSibling;
+      basisEl.textContent = basis === 0 ? '┃' : '╱';
+      if(degEl) degEl.textContent = basis === 0 ? '90°' : '45°';
+    }
+  }
+
+  function renderPhase2() {
+    const container = document.getElementById('basis-comparison');
+    container.innerHTML = '';
+
+    for(let i = 0; i < game.numParticles; i++) {
+      const row = document.createElement('div');
+      const basesMatch = game.aliceBases[i] === game.bobBases[i];
+      row.className = 'basis-card ' + (basesMatch ? 'match' : 'mismatch');
+      row.innerHTML = `
+        <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.5rem;">Particle ${i + 1}</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.5rem; font-size: 0.9rem;">
+          <div><span style="color: #888; font-size: 0.65rem;">Alice:</span><br><strong>${game.aliceBases[i] === 0 ? '┃' : '╱'}</strong></div>
+          <div><span style="color: #888; font-size: 0.65rem;">Bob:</span><br><strong>${game.bobBases[i] === 0 ? '┃' : '╱'}</strong></div>
+        </div>
+        <div style="padding: 0.5rem; background: rgba(0,0,0,0.3); border-radius: 4px; font-size: 0.75rem; font-weight: bold;">
+          ${basesMatch ? '<span style="color: #7ef27e;">✓ Match</span>' : '<span style="color: #ff9a9a;">✗ Mismatch</span>'}
+        </div>
+      `;
+      container.appendChild(row);
+    }
+  }
+
+  function showResults() {
+    document.getElementById('particle-display').style.display = 'none';
+    document.getElementById('phase-info').style.display = 'none';
+    document.getElementById('submit-level1').style.display = 'none';
+    document.getElementById('fake-bits-display').style.display = 'none';
+    document.getElementById('fake-bits-section').style.display = 'none';
+    document.getElementById('basis-comparison').style.display = 'none';
+    document.getElementById('basis-comparison-section').style.display = 'none';
+    document.getElementById('submit-fake-bits').style.display = 'none';
+    document.getElementById('submit-basis-comparison').style.display = 'none';
+    document.getElementById('results-screen').style.display = 'block';
+
+    // Calculate how many bits Eve got correct
+    let correctCount = 0;
+    for(let i = 0; i < game.numParticles; i++) {
+      if(eveChosenBases[i] === game.aliceBases[i] && eveInterceptedValues[i] === game.aliceValues[i]) {
+        correctCount++;
+      }
+    }
+
+    const resultsText = document.getElementById('results-text');
+    resultsText.innerHTML = `
+      <p><strong>Results:</strong></p>
+      <p>You correctly intercepted <strong>${correctCount} out of ${game.numParticles}</strong> bits.</p>
+      <p style="margin-top: 1.5rem; font-size: 0.95rem;">
+        But wait... Alice and Bob noticed something strange in their measurements! They detected anomalies that suggest someone was eavesdropping on their quantum channel. They realized the BB84 protocol detected the intrusion because my random guesses disrupted their quantum states.
+      </p>
+      <p style="margin-top: 1rem; font-size: 0.95rem; color: #ffcc00;">
+        However, I've devised a new strategy. If I can get a measurement list from Alice's device directly, I can match her bases perfectly and eavesdrop without being detected! Let me try this new approach...
+      </p>
+    `;
+  }
+
+  document.getElementById('proceed-level2').addEventListener('click', () => {
+    // Redirect to Level 2 (level3.2.html)
+    window.location.href = 'level3.2.html';
+  });
+
+  // Initialize page on load: show title screen first
+  document.addEventListener('DOMContentLoaded', () => {
+    const title = document.getElementById('title-screen');
+    const main = document.getElementById('game-main');
+    if(title) title.style.display = 'block';
+    if(main) main.style.display = 'none';
+
+    const startBtn = document.getElementById('start-level');
+    if(startBtn) {
+      startBtn.addEventListener('click', () => {
+        title.style.display = 'none';
+        main.style.display = 'block';
+        renderPhase1();
+      });
+    }
+  });
+
+  // Settings menu code
+  const btn = document.getElementById("settings-btn");
+  const menu = document.getElementById("settings-menu");
+  const oneOption = document.getElementById("1option");
+  const twoOption = document.getElementById("2option");
+
+  let menuOpen = false;
+
+  btn.onclick = () => {
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? "block" : "none";
+  };
+</script>
