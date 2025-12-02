@@ -517,3 +517,31 @@
     menu.style.display = menuOpen ? "block" : "none";
   };
 </script>
+
+<!-- Levels slide-out tab -->
+<div id="levels-tab" title="Open levels">Levels</div>
+<aside id="levels-sidebar" aria-hidden="true">
+  <button id="levels-close" class="btn btn-outline">Close</button>
+  <h3>Levels</h3>
+  <ul class="levels-list">
+    <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+    <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
+    <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
+  </ul>
+</aside>
+
+<script>
+  (function(){
+    const tab = document.getElementById('levels-tab');
+    const sidebar = document.getElementById('levels-sidebar');
+    const closeBtn = document.getElementById('levels-close');
+    if(tab && sidebar){
+      tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+      closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+    }
+  })();
+</script>
+
+</body>
+</html>

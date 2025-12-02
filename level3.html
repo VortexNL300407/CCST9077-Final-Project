@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Level 3 — Quantum Cryptography (Choose)</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Quantum Cryptography</h1>
+      <p><em>Cryptography of the future</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="card" style="text-align:center;">
+        <h2>Level 3 — Choose a Scenario</h2>
+        <p style="color:#dbe7ff; max-width:760px; margin:0.6rem auto;">Level 3 has been split into two parts. Choose the stage you want to play:</p>
+
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.2rem;">
+          <a class="btn" href="level3.1.html">3.1 — First Eavesdropping Attempt</a>
+          <a class="btn btn-outline" href="level3.2.html">3.2 — With Inside Information</a>
+        </div>
+
+        <p style="margin-top:1.2rem; color:#cfdcff;">If a page redirected you here, pick the part you intended to play. You can always return to the Levels menu.</p>
+
+        <div style="margin-top:1.4rem;"><a class="btn" href="levels.html">Back to Levels</a></div>
+      </section>
+    </main>
+
+    <footer>
+      CCST9077 | Members:
+    </footer>
+
+    <!-- Levels slide-out tab -->
+    <div id="levels-tab" title="Open levels">Levels</div>
+    <aside id="levels-sidebar" aria-hidden="true">
+      <button id="levels-close" class="btn btn-outline">Close</button>
+      <h3>Levels</h3>
+      <ul class="levels-list">
+        <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+        <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
+        <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
+      </ul>
+    </aside>
+
+    <script>
+      (function(){
+        const tab = document.getElementById('levels-tab');
+        const sidebar = document.getElementById('levels-sidebar');
+        const closeBtn = document.getElementById('levels-close');
+        if(tab && sidebar){
+          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+        }
+      })();
+    </script>
+
+  </body>
+</html>
