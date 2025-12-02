@@ -18,22 +18,97 @@
     </header>
 
     <main class="page">
-      <section class="card">
-        <h2>Level 2 — Modern Cryptography (Materials)</h2>
-        <p>After a few weeks, Alice and Bob upgraded their communication security to Modern Public Key Cryptography.</p>
-        <p>This section will hold short materials covering:
-          <ul>
-            <li>Quantum superposition &amp; entanglement</li>
-            <li>Quantum computing — what it is and what it isn't</li>
-            <li>High-level concept of Shor's algorithm (no math)</li>
-          </ul>
-        </p>
-        <p>(Materials placeholder — content to be added here.)</p>
+      <section class="card" id="materials-card">
+        <div class="materials-inner">
+          <h2 style="text-align:center; margin-top:0;">Level 2 — Materials: Quantum Superposition</h2>
+          <div class="superposition-card">
+            <!-- Explanatory text first -->
+            <div class="demo-notes" style="max-width:780px; text-align:center;">
+              <p class="demo-note">What is quantum superposition? What does it mean for a bit to be in superposition?</p>
+              <p class="demo-note">Think of a normal computer bit as a simple light switch:</p>
+              <p class="demo-note">It's either
+                <span class="bulb-row" aria-hidden="true">
+                  <span class="bulb on" title="ON (1)">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path class="filament" d="M12 2C8.13 2 5 5.13 5 9c0 3.25 1.99 4.96 2.5 5.5.5.5.5 1.5.5 1.5h8c0 0 0-1 .5-1.5C17.01 13.96 19 12.25 19 9c0-3.87-3.13-7-7-7z"/>
+                      <rect x="10" y="17" width="4" height="2" rx="0.5" />
+                    </svg>
+                    <span class="label">1 (ON)</span>
+                  </span>
+                  <span class="bulb off" title="OFF (0)">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path class="filament" d="M12 2C8.13 2 5 5.13 5 9c0 3.25 1.99 4.96 2.5 5.5.5.5.5 1.5.5 1.5h8c0 0 0-1 .5-1.5C17.01 13.96 19 12.25 19 9c0-3.87-3.13-7-7-7z"/>
+                      <rect x="10" y="17" width="4" height="2" rx="0.5" />
+                    </svg>
+                    <span class="label">0 (OFF)</span>
+                  </span>
+                </span>
+              </p>
+              <p class="demo-note">A quantum bit, or qubit, is stranger. Before you look at it, it can be in a state called superposition—like a spinning coin that is both Heads and Tails at the same time.</p>
+              <p class="demo-note">This lets a quantum computer explore many possible answers to a problem all at once. However, there's a catch: the moment you measure the qubit to check its state, this superposition "collapses." The spinning coin lands, and you only get a single, definite state: either a 0 or a 1.</p>
+              <p class="demo-note">Let's use a box analogy with a superposition ball. When you open the box, it has a 50% probability to collapse to the left and 50% probability to fall to the right.</p>
+
+              <!-- Secondary demo (no flashlight) inserted for comparison -->
+              <div class="mini-superposition" style="max-width:640px; margin: 0.8rem auto;">
+                <div style="text-align:center; margin-bottom:0.4rem; color:#d6e6ff; font-weight:700;">Try this box (no force):</div>
+                <div style="display:flex; gap:0.8rem; align-items:center; justify-content:center;">
+                  <div class="demo-box" style="width:200px; height:120px;">
+                    <div class="demo-inner">
+                      <div id="demo-ball-2" class="ball spin" role="img" aria-label="Qubit in superposition">?</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex; gap:0.6rem; margin-top:0.6rem; justify-content:center;">
+                  <button id="open-box-2" class="btn">Open Box (Measure)</button>
+                  <button id="reset-box-2" class="btn btn-outline">Reset</button>
+                </div>
+                <div id="demo-result-2" class="demo-result" aria-live="polite" style="margin-top:0.6rem;"></div>
+              </div>
+
+              <p class="demo-note">Another key realization is that quantum superposition is NOT simply: The ball is either in left or right and we don't know until we open the box.</p>
+              <p class="demo-note">We can prove whether superposition is a whole new state of existence.</p>
+              <p class="demo-note">If we apply a FORCE to a SUPERPOSITIONED ball, the ball will always fall to the left.</p>
+              <p class="demo-note">If we apply a FORCE to a NON-Superposition ball, the ball will have 50/50 chance of falling on either side of the box when opened.</p>
+              <p class="demo-note">Go ahead and see what happens:</p>
+              </div>
+
+            <!-- Demo box in the middle -->
+            <div style="text-align:center; margin-bottom:0.4rem; color:#d6e6ff; font-weight:700;">Try this box (with force):</div>
+            <div class="demo-area">
+              <div class="demo-box" aria-hidden="true">
+                <div class="demo-inner">
+                  <div id="demo-ball" class="ball spin" role="img" aria-label="Qubit in superposition">?</div>
+                </div>
+              </div>
+              <!-- Flash energy element: animated waves travel from the flashlight toward the box -->
+              <div id="flash-energy" class="flash-energy" aria-hidden="true">
+                <div class="wave w1"></div>
+                <div class="wave w2"></div>
+                <div class="wave w3"></div>
+              </div>
+              <!-- Flashlight: represents an applied FORCE that forces collapse to the left -->
+              <button id="flashlight" class="flashlight" title="Apply Force (always forces collapse to the left)">🔦 Force</button>
+            </div>
+
+            <!-- Controls below the box -->
+            <div class="demo-controls">
+              <button id="open-box" class="btn">Open Box (Measure)</button>
+              <button id="reset-box" class="btn btn-outline">Reset (Re-superpose)</button>
+              <div id="demo-result" class="demo-result" aria-live="polite"></div>
+              <div style="margin-top:0.8rem; display:flex; gap:0.6rem; justify-content:center;">
+                <button id="view-questions" class="btn">View Questions</button>
+                <button id="to-entanglement" class="btn btn-outline">Next: Entanglement</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section class="card" id="mcq">
+      <section class="card" id="mcq" style="display:none;">
         <h2>Level 2 — Knowledge Check (MCQ)</h2>
         <p>Answer the multiple-choice questions to test your understanding.</p>
+
+        <div style="margin-bottom:0.6rem;"><button id="back-to-materials" class="btn btn-outline">Back to Materials</button></div>
 
         <div id="quiz">
           <div id="question-box">
@@ -96,6 +171,129 @@
     </script>
 
     <script>
+      // Superposition demo + view toggles for Materials / Questions
+      (function(){
+        const openBtn = document.getElementById('open-box');
+        const resetBtn = document.getElementById('reset-box');
+        const ball = document.getElementById('demo-ball');
+        const result = document.getElementById('demo-result');
+        const viewQ = document.getElementById('view-questions');
+        const toEnt = document.getElementById('to-entanglement');
+        const backMat = document.getElementById('back-to-materials');
+        const materials = document.getElementById('materials-card');
+        const mcq = document.getElementById('mcq');
+        const flashlight = document.getElementById('flashlight');
+        // secondary demo elements (no flashlight)
+        const openBtn2 = document.getElementById('open-box-2');
+        const resetBtn2 = document.getElementById('reset-box-2');
+        const ball2 = document.getElementById('demo-ball-2');
+        const result2 = document.getElementById('demo-result-2');
+
+        // When true, the flashlight (force) forces collapse to the left
+        let forceLeft = false;
+        let measured = false;
+        let measured2 = false;
+
+        function collapse() {
+          if(measured) return;
+          measured = true;
+          // If force is applied, always collapse left (0), otherwise random 0/1
+          const val = forceLeft ? 0 : (Math.random() < 0.5 ? 0 : 1);
+          ball.classList.remove('spin');
+          if(val === 0){
+            ball.classList.add('left');
+            ball.classList.remove('right');
+          } else {
+            ball.classList.add('right');
+            ball.classList.remove('left');
+          }
+          ball.textContent = val;
+          result.textContent = `Measured: ${val} (superposition collapsed)`;
+          // If force was active, visually highlight that the left was forced
+          if(forceLeft) {
+            result.textContent = `Measured: ${val} (FORCE applied — collapsed LEFT)`;
+            result.classList.add('correct');
+          } else {
+            result.classList.add('correct');
+          }
+          openBtn.disabled = true;
+        }
+
+        function reset() {
+          measured = false;
+          ball.classList.remove('left','right');
+          ball.classList.add('spin');
+          ball.textContent = '?';
+          result.textContent = forceLeft ? 'Force still active — next collapse will be LEFT' : '';
+          result.classList.remove('correct');
+          openBtn.disabled = false;
+        }
+
+        // Secondary demo collapse/reset (no force)
+        function collapse2(){
+          if(measured2) return;
+          measured2 = true;
+          const val = Math.random() < 0.5 ? 0 : 1;
+          ball2.classList.remove('spin');
+          if(val === 0){ ball2.classList.add('left'); ball2.classList.remove('right'); }
+          else { ball2.classList.add('right'); ball2.classList.remove('left'); }
+          ball2.textContent = val;
+          result2.textContent = `Measured: ${val} (superposition collapsed)`;
+          result2.classList.add('correct');
+          if(openBtn2) openBtn2.disabled = true;
+        }
+
+        function reset2(){
+          measured2 = false;
+          if(ball2) { ball2.classList.remove('left','right'); ball2.classList.add('spin'); ball2.textContent = '?'; }
+          if(result2) { result2.textContent = ''; result2.classList.remove('correct'); }
+          if(openBtn2) openBtn2.disabled = false;
+        }
+
+        // flashlight toggles the applied force and triggers an energy pulse visualization
+        let pulseTimeout = null;
+        const demoArea = document.querySelector('.demo-area');
+        const demoBox = document.querySelector('.demo-box');
+        function energizePulse(){
+          if(!demoArea) return;
+          // restart animation if already energized
+          demoArea.classList.remove('energized');
+          demoBox && demoBox.classList.remove('glow');
+          void demoArea.offsetWidth;
+          demoArea.classList.add('energized');
+          demoBox && demoBox.classList.add('glow');
+          clearTimeout(pulseTimeout);
+          pulseTimeout = setTimeout(()=>{ demoArea.classList.remove('energized'); demoBox && demoBox.classList.remove('glow'); }, 1000);
+        }
+
+        if(flashlight){
+          flashlight.addEventListener('click', ()=>{
+            forceLeft = !forceLeft;
+            flashlight.classList.toggle('on', forceLeft);
+            flashlight.textContent = forceLeft ? '🔦 Forced: Left' : '🔦 Force';
+            // show a short wavy energy pulse from the flashlight to the box
+            energizePulse();
+            // update result hint when not yet measured
+            if(!measured){
+              result.textContent = forceLeft ? 'Force applied: collapse will be LEFT' : '';
+            }
+          });
+        }
+
+        if(openBtn) openBtn.addEventListener('click', collapse);
+        if(resetBtn) resetBtn.addEventListener('click', reset);
+        if(openBtn2) openBtn2.addEventListener('click', collapse2);
+        if(resetBtn2) resetBtn2.addEventListener('click', reset2);
+        if(viewQ) viewQ.addEventListener('click', ()=>{ if(materials) materials.style.display = 'none'; if(mcq) mcq.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        if(toEnt) toEnt.addEventListener('click', ()=>{ window.location.href = 'entanglement.html'; });
+        if(backMat) backMat.addEventListener('click', ()=>{ if(mcq) mcq.style.display = 'none'; if(materials) materials.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        // initialize
+        reset();
+      })();
+    </script>
+
+    <script>
       // Level 2 MCQ logic
       (function(){
         const questions = [
@@ -131,6 +329,28 @@
             ],
             correct: 1,
             explanation: "Once measured, the qubit's superposition is gone, and the result is a perfectly ordinary classical bit—a definitive 0 or a 1. The quantum 'magic' happens before the measurement, during the calculation."
+          },
+          {
+            q: "What is the key property of entangled particles, as described in the passage?",
+            choices: [
+              "They can be used to send instant messages across any distance.",
+              "Measuring one particle instantly tells you something about the other, even if it's far away.",
+              "They are physically connected by an invisible force field.",
+              "They always have to be created in the same location."
+            ],
+            correct: 1,
+            explanation: "This is the core 'spooky' idea of entanglement. The particles share a quantum connection, so the act of measuring one (and getting a random result) immediately determines the corresponding state of its partner. It's a powerful correlation, but not a communication channel."
+          },
+          {
+            q: "Why can't entangled particles be used to send a message instantly, like a text?",
+            choices: [
+              "Because the connection between them is slower than light.",
+              "Because the person measuring the particles can't control the random outcome.",
+              "Because the particles stop being entangled if they are too far apart.",
+              "Because the message gets lost in space."
+            ],
+            correct: 1,
+            explanation: "The person measuring one of the entangled particles has no control over whether they get a result equivalent to 'heads' or 'tails.' It's completely random. Since they can't force it to be a specific value, they can't encode a meaningful message. The correlation is only apparent later, when both sides compare their random results and find they match."
           }
         ];
 
@@ -181,7 +401,7 @@
           updateScore();
         }
 
-        function updateScore(){ scoreEl.textContent = `Score: ${score} / ${attempts}`; }
+        function updateScore(){ scoreEl.textContent = `Score: ${score} / ${questions.length}`; }
 
         function getSelected(){ const r = document.querySelector('input[name="choice"]:checked'); return r ? parseInt(r.value,10) : null; }
 

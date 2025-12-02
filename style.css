@@ -135,6 +135,59 @@
     .page { padding: .1rem 1rem; }
     .card { max-width: 900px; margin: 2rem auto; background: rgba(20,20,20,0.3); padding: 1.6rem; border-radius: 10px; }
 
+    /* Level 2: Superposition demo styles */
+    .superposition-card { display:flex; flex-direction:column; gap:1.2rem; align-items:center; justify-content:center; max-width:980px; margin: 0 auto; padding: 0.6rem; }
+    .demo-area { width:100%; display:flex; align-items:center; justify-content:center; min-width:280px; }
+    .demo-controls { width:100%; max-width:420px; display:flex; flex-direction:column; align-items:center; }
+    .demo-box { width: 260px; height: 150px; border-radius: 12px; background: linear-gradient(180deg,#0f1724,#16243a); border: 2px solid rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center; position: relative; overflow: hidden; }
+    .demo-inner { width: 80%; height: 70%; background: rgba(255,255,255,0.02); border-radius: 8px; display:flex; align-items:center; justify-content:center; position: relative; }
+    .ball { width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff 0%, #d4f2ff 20%, #57acf6 100%); display:flex; align-items:center; justify-content:center; font-weight:800; color:#052028; font-family: monospace; box-shadow: 0 8px 20px rgba(0,0,0,0.35); transform-origin: center; transition: transform 420ms cubic-bezier(.2,.9,.2,1), left 420ms, box-shadow 320ms, background 320ms; position: absolute; left: calc(50% - 23px); }
+    .ball.spin { animation: spin 1100ms linear infinite; filter: blur(1.6px); opacity: 0.95; }
+    @keyframes spin { from { transform: rotate(0deg) scale(0.98); } to { transform: rotate(360deg) scale(0.98); } }
+    .ball.left { left: 18px; transform: translateX(0) scale(1.02); box-shadow: 0 12px 40px rgba(46,204,113,0.12); background: linear-gradient(135deg,#7ef27e,#57acf6); }
+    .ball.right { left: calc(100% - 64px); transform: translateX(0) scale(1.02); box-shadow: 0 12px 40px rgba(46,204,113,0.12); background: linear-gradient(135deg,#7ef27e,#57acf6); }
+    .demo-note { color:#d6e6ff; font-size:0.98rem; line-height:1.4; text-align:center; }
+    .demo-controls .btn { width:100%; margin-bottom:0.6rem; }
+    .demo-result { margin-top:0.6rem; font-weight:700; color:#ffe14a; min-height:1.2rem; }
+
+    /* subtle glow for collapsed result */
+    .demo-result.correct { color:#7ef27e; }
+
+  /* Bulb visuals for ON/OFF explanations */
+  .bulb-row { display:inline-flex; gap:0.8rem; align-items:center; margin-left:0.4rem; }
+  .bulb { display:inline-flex; align-items:center; gap:0.45rem; color:#d6e6ff; font-weight:700; }
+  .bulb svg { width:26px; height:26px; display:block; }
+  .bulb .label { font-size:0.95rem; color:#d6e6ff; }
+  .bulb.on svg .filament { stroke:#ffcc33; fill:#fff6d1; }
+  .bulb.off svg .filament { stroke:#7a7a7a; fill:#444b55; }
+  .bulb.on { filter: drop-shadow(0 8px 18px rgba(255,200,60,0.14)); }
+  .bulb.off { opacity:0.86; }
+
+
+    /* Flashlight / Force control */
+    .flashlight { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 5; padding: 0.6rem 0.8rem; border-radius: 10px; background: rgba(0,0,0,0.45); color: #fff; border: 1px solid rgba(255,255,255,0.06); cursor: pointer; }
+    .flashlight.on { background: linear-gradient(135deg,#7ef27e,#57acf6); color:#042018; box-shadow: 0 12px 36px rgba(46,204,113,0.18); border-color: rgba(46,204,113,0.28); }
+    .demo-area { position: relative; }
+
+    /* Energy wave from flashlight to box */
+    .flash-energy { position: absolute; right: 86px; top: 50%; transform: translateY(-50%); width: 260px; height: 76px; pointer-events: none; overflow: visible; z-index: 4; }
+    .flash-energy .wave { position: absolute; right: 0; width: 240px; background: linear-gradient(90deg, rgba(126,242,126,0.95), rgba(87,172,246,0.9)); border-radius: 999px; filter: blur(6px); opacity: 0; transform: translateX(0); }
+    .flash-energy .wave.w1{ top: 30%; height: 6px; }
+    .flash-energy .wave.w2{ top: 46%; height: 8px; }
+    .flash-energy .wave.w3{ top: 62%; height: 6px; }
+
+    @keyframes wave-move {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(-280px); opacity: 0; }
+    }
+
+    .demo-area.energized .flash-energy .wave { animation: wave-move 0.9s ease-out forwards; }
+    .demo-area.energized .flash-energy .wave.w2 { animation-delay: 0.06s; }
+    .demo-area.energized .flash-energy .wave.w3 { animation-delay: 0.12s; }
+
+    /* Box glow when energy arrives */
+    .demo-box.glow { box-shadow: 0 10px 40px rgba(87,172,246,0.12), inset 0 0 30px rgba(126,242,126,0.06); border: 1px solid rgba(126,242,126,0.08); }
+
 /* Levels slide-out tab */
     #levels-tab {
       position: fixed;
@@ -194,7 +247,8 @@
     @media (max-width: 640px){
       #levels-sidebar { width: 100%; right: -100%; }
       #levels-sidebar.open { right: 0; }
-      #levels-tab { display: none; }
+      /* Keep the levels tab visible in narrow previews so users can open the sidebar in small viewports. */
+      #levels-tab { display: inline-flex; transform: translateY(-50%) scale(0.95); }
     }
 
 /*Footer*/

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Level 2 — Quantum Entanglement</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Quantum Cryptography</h1>
+      <p><em>Cryptography of the future</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <h2 style="text-align:center; margin-top:0;">Level 2 — Materials: Quantum Entanglement</h2>
+        <p style="text-align:center; max-width:820px; margin:0.6rem auto; color:#d6e6ff;">Entanglement is a quantum connection between two particles so strong that measuring one immediately affects the other, even when they're apart. The following demo shows a simplified model: measure the left particle and the right one will show a correlated result.</p>
+        <p style="text-align:center; max-width:820px; margin:0.6rem auto; color:#d6e6ff;">Imagine you have a pair of gloves. Two boxes contain each pair of gloves, you don’t know which contains the left-hand glove and which contains the right-hand glove. You and your friend each choose one and take it home. When either one of you opens the box, both of you will know which glove is in the second box before opening it. Confirming by opening the second box will prove that it's the other pair.</p>
+        <p style="text-align:center; max-width:820px; margin:0.6rem auto; color:#d6e6ff;">When two particles are entangled, they are linked in such a way that measuring one instantly influences the state of the other, no matter how far apart they are. This connection is faster than light and seems to defy our everyday experience. However, you cannot use it to send a message. The outcome of your measurement is random, but when one particle has been measured to a defined state, the other particle will obtain the same exact state when measured.</p>
+        <div style="display:flex; gap:1.2rem; align-items:flex-start; justify-content:center; margin-top:1rem; flex-wrap:wrap;">
+          <div style="text-align:center; width:220px;">
+            <div class="demo-box" style="width:180px; height:130px; margin:0 auto;">
+              <div class="demo-inner">
+                <div id="ent-ball-l" class="ball spin" role="img" aria-label="Left entangled particle">?</div>
+              </div>
+            </div>
+            <div style="margin-top:0.6rem; display:flex; justify-content:center;">
+              <button id="measure-l" class="btn">Measure Left</button>
+            </div>
+            <div id="ent-result-l" class="demo-result" style="margin-top:0.6rem;"></div>
+          </div>
+
+          <div style="text-align:center; width:220px;">
+            <div class="demo-box" style="width:180px; height:130px; margin:0 auto;">
+              <div class="demo-inner">
+                <div id="ent-ball-r" class="ball spin" role="img" aria-label="Right entangled particle">?</div>
+              </div>
+            </div>
+            <div style="margin-top:0.6rem; display:flex; justify-content:center;">
+              <button id="measure-r" class="btn">Measure Right</button>
+            </div>
+            <div id="ent-result-r" class="demo-result" style="margin-top:0.6rem; text-align:center; min-width:120px;"></div>
+          </div>
+        </div>
+
+        <!-- Centered reset button for both boxes -->
+        <div style="display:flex; justify-content:center; margin-top:0.8rem;">
+          <button id="reset-ent" class="btn btn-outline">Reset</button>
+        </div>
+
+        <div style="text-align:center; margin-top:1.2rem; color:#d6e6ff;">Tip: Measuring either particle collapses the pair; in this simplified demo measurements are perfectly correlated.</div>
+
+        <div style="text-align:center; margin-top:1.4rem;">
+          <a class="btn btn-outline" href="level2.html">Back to Level 2 Materials</a>
+          <a class="btn" href="level3.html" style="margin-left:0.6rem;">Continue to Level 3</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; CCST9077
+    </footer>
+
+    <!-- Levels slide-out tab -->
+    <div id="levels-tab" title="Open levels">Levels</div>
+    <aside id="levels-sidebar" aria-hidden="true">
+      <button id="levels-close" class="btn btn-outline">Close</button>
+      <h3>Levels</h3>
+      <ul class="levels-list">
+        <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+        <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
+        <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
+      </ul>
+    </aside>
+
+    <script>
+      (function(){
+        const tab = document.getElementById('levels-tab');
+        const sidebar = document.getElementById('levels-sidebar');
+        const closeBtn = document.getElementById('levels-close');
+        if(tab && sidebar){
+          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+        }
+      })();
+
+      // Simple entanglement demo logic — measure either side; the hidden entangled value is shared
+      (function(){
+        const left = document.getElementById('ent-ball-l');
+        const right = document.getElementById('ent-ball-r');
+        const measureL = document.getElementById('measure-l');
+        const measureR = document.getElementById('measure-r');
+        const resetBtn = document.getElementById('reset-ent');
+        const resL = document.getElementById('ent-result-l');
+        const resR = document.getElementById('ent-result-r');
+
+        // entValue is the shared entangled result (null until one side is measured)
+        let entValue = null;
+        let measuredLeft = false;
+        let measuredRight = false;
+
+        function revealOnSide(sideEl, resultEl, val){
+          sideEl.classList.remove('spin');
+          sideEl.classList.toggle('left', val===0);
+          sideEl.classList.toggle('right', val===1);
+          sideEl.textContent = val;
+          resultEl.textContent = `Measured: ${val}`;
+          resultEl.classList.add('correct');
+        }
+
+        function measureLeft(){
+          if(measuredLeft) return;
+          // if entValue not set, set it now randomly
+          if(entValue === null) entValue = Math.random() < 0.5 ? 0 : 1;
+          revealOnSide(left, resL, entValue);
+          measuredLeft = true;
+          measureL.disabled = true;
+          // if the other side was already measured earlier, keep its displayed state
+        }
+
+        function measureRight(){
+          if(measuredRight) return;
+          if(entValue === null) entValue = Math.random() < 0.5 ? 0 : 1;
+          revealOnSide(right, resR, entValue);
+          measuredRight = true;
+          measureR.disabled = true;
+        }
+
+        function reset(){
+          entValue = null;
+          measuredLeft = false; measuredRight = false;
+          [left,right].forEach(b=>{ b.classList.remove('left','right'); b.classList.add('spin'); b.textContent='?'; });
+          resL.textContent = ''; resR.textContent = '';
+          if(measureL) measureL.disabled = false;
+          if(measureR) measureR.disabled = false;
+        }
+
+        measureL && measureL.addEventListener('click', measureLeft);
+        measureR && measureR.addEventListener('click', measureRight);
+        resetBtn && resetBtn.addEventListener('click', reset);
+        // initialize
+        reset();
+      })();
+    </script>
+  </body>
+</html>
