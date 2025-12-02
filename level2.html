@@ -155,7 +155,7 @@
       <ul class="levels-list">
         <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
         <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
-        <li><a href="level3.html">Level 3 — QKD Simulation</a></li>
+        <li><a href="level3_materials.html">Level 3 — QKD Materials</a></li>
       </ul>
     </aside>
 
@@ -300,6 +300,8 @@
           // scroll to top for visibility
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        // Support redirect to Level 3 Materials from in-page flows
+        function goToLevel3Materials(){ window.location.href = 'level3_materials.html'; }
       })();
     </script>
 
@@ -461,7 +463,7 @@
 
         continueBtn.addEventListener('click', ()=>{
           // Optionally could pass data via query params/localStorage
-          window.location.href = 'level3.html';
+          window.location.href = 'level3_materials.html';
         });
 
         backLevelsBtn.addEventListener('click', ()=>{
