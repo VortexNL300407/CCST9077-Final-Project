@@ -43,58 +43,60 @@
     </aside>
 
     <!-- Floating Settings / Music controls -->
-    <audio id="bgm" src="bgm.mp3" loop></audio>
+    <audio id="bgm" src="media/bgm.mp3" loop></audio>
     <div id="settings-btn">⚙️</div>
     <div id="settings-menu">
       <div id="mute-option" class="option">Mute Music</div>
       <div id="theme-option" class="option">Another Option</div>
     </div>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">Hello! I'm a placeholder!</div>
+    </div>
 
     <footer>
       &copy; CCST9077
     </footer>
-
-    <script>
-      // Levels sidebar toggle (shared behaviour)
-      (function(){
-        const tab = document.getElementById('levels-tab');
-        const sidebar = document.getElementById('levels-sidebar');
-        const closeBtn = document.getElementById('levels-close');
-        if(tab && sidebar){
-          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
-          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
-          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
-        }
-      })();
-
-      // Settings / background music logic
-      (function(){
-        const bgm = document.getElementById('bgm');
-        const btn = document.getElementById('settings-btn');
-        const menu = document.getElementById('settings-menu');
-        const muteOption = document.getElementById('mute-option');
-        let menuOpen = false;
-
-        let savedMuted = localStorage.getItem('musicMuted') === 'true';
-        let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
-        bgm.muted = savedMuted;
-        bgm.currentTime = savedTime;
-
-        window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
-        bgm.volume = 0.2; bgm.muted = savedMuted; bgm.play().catch(()=>{});
-
-        setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
-
-        btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
-        muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
-        muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
-      })();
-
-      // Small entrance animation for hero content
-      document.addEventListener('DOMContentLoaded', ()=>{
-        const heroInner = document.querySelector('.hero-inner');
-        if(heroInner){ heroInner.classList.remove('pop-in'); void heroInner.offsetWidth; heroInner.classList.add('pop-in'); }
-      });
-    </script>
   </body>
+
+  <!-- LEVELS SIDEBAR TOGGLE SYSTEM -->
+  <script>
+    (function(){
+      const tab = document.getElementById('levels-tab');
+      const sidebar = document.getElementById('levels-sidebar');
+      const closeBtn = document.getElementById('levels-close');
+      if(tab && sidebar){
+        tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+        closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+        document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+      }
+    })();
+  </script>
+  <!-- END LEVELS SIDEBAR TOGGLE SYSTEM -->
+
+  <!-- BACKGROUND MUSIC SYSTEM - INSERT/REMOVE THIS BLOCK AS NEEDED -->
+  <script>
+    (function(){
+      const bgm = document.getElementById('bgm');
+      const btn = document.getElementById('settings-btn');
+      const menu = document.getElementById('settings-menu');
+      const muteOption = document.getElementById('mute-option');
+      let menuOpen = false;
+
+      let savedMuted = localStorage.getItem('musicMuted') === 'true';
+      let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
+      bgm.muted = savedMuted;
+      bgm.currentTime = savedTime;
+
+      window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
+      bgm.volume = 0.2; bgm.muted = savedMuted; bgm.play().catch(()=>{});
+
+      setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
+
+      btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
+      muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
+      muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
+    })();
+  </script>
+  <!-- END BACKGROUND MUSIC SYSTEM -->
 </html>
