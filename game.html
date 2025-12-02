@@ -12,9 +12,303 @@
       .cipher-wheel-svg { width: 260px; height: 260px; }
       .cipher-wheel-svg text { font-family: system-ui, sans-serif; font-size: 14px; dominant-baseline: middle; text-anchor: middle; fill: #fff; }
       .cipher-wheel-svg circle { fill: none; stroke: rgba(255,255,255,0.25); }
-      .cipher-wheel-svg .outer-ring { /* remove CSS-based transform control; keep class for styling if needed */ }
-      .cipher-wheel-svg .no-transition { /* no longer used; kept for compatibility */ }
       .cipher-wheel-meta { font-size: 0.9rem; opacity: 0.9; }
+
+      /* Story-driven game UI */
+      .game-story-header {
+        background: rgba(20, 20, 50, 0.85);
+        border: 2px solid rgba(255, 107, 157, 0.4);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(255, 107, 157, 0.2);
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      .eve-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #ff6b9d;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      .eve-badge::before,
+      .eve-badge::after {
+        content: "🔍";
+        font-size: 1.2rem;
+      }
+
+      .story-intro {
+        color: #e0e0ff;
+        line-height: 1.7;
+        font-size: 1.05rem;
+      }
+
+      .story-intro strong {
+        color: #ffd700;
+      }
+
+      .story-intro em {
+        color: #00ffff;
+        font-style: normal;
+      }
+
+      .mission-objective {
+        background: rgba(255, 215, 0, 0.1);
+        border-left: 4px solid #ffd700;
+        padding: 0.8rem 1rem;
+        margin-top: 1rem;
+        border-radius: 6px;
+        color: #ffd700;
+        font-weight: 600;
+      }
+
+      .encrypted-message-box {
+        background: linear-gradient(135deg, rgba(10, 15, 36, 0.8), rgba(30, 40, 80, 0.8));
+        border: 2px solid rgba(0, 255, 255, 0.4);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .encrypted-message-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00ffff, transparent);
+        animation: scan 3s linear infinite;
+      }
+
+      @keyframes scan {
+        0%, 100% { transform: translateX(-100%); }
+        50% { transform: translateX(100%); }
+      }
+
+      .encrypted-label {
+        color: #00ffff;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .encrypted-label::before {
+        content: "🔒";
+      }
+
+      .encrypted {
+        font-family: 'Courier New', monospace;
+        font-size: 1.8rem;
+        color: #fff;
+        text-align: center;
+        letter-spacing: 4px;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        padding: 1rem;
+        background: rgba(0, 255, 255, 0.05);
+        border-radius: 8px;
+      }
+
+      .cipher-section {
+        background: rgba(30, 15, 50, 0.6);
+        border: 2px solid rgba(100, 200, 255, 0.3);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+      }
+
+      .section-title {
+        color: #57acf6;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .section-title::before {
+        content: "⚛️";
+        animation: rotate-slow 4s linear infinite;
+      }
+
+      #answer-area {
+        background: rgba(20, 20, 50, 0.6);
+        border: 2px solid rgba(255, 107, 157, 0.3);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      #answer-area label {
+        color: #ff6b9d;
+        font-weight: bold;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.8rem;
+      }
+
+      #answer-area label::before {
+        content: "💬";
+      }
+
+      #answer {
+        background: rgba(10, 15, 36, 0.8);
+        border: 2px solid rgba(0, 255, 255, 0.4);
+        color: #fff;
+        font-family: 'Courier New', monospace;
+        font-size: 1.2rem;
+        padding: 1rem;
+        border-radius: 8px;
+        width: 50%;
+        transition: all 0.3s ease;
+      }
+
+      #answer:focus {
+        outline: none;
+        border-color: #00ffff;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      }
+
+      .button-group {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+
+      .hint-box {
+        display: none;
+        background: rgba(255, 179, 71, 0.15);
+        border: 2px solid #ffb347;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 1rem;
+        animation: slideDown 0.3s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hint-box p {
+        color: #ffb347;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      #feedback {
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        text-align: center;
+        animation: popIn 0.4s cubic-bezier(.2,.9,.2,1);
+      }
+
+      #explanation {
+        background: rgba(0, 255, 255, 0.1);
+        border-left: 4px solid #00ffff;
+        padding: 1rem;
+        border-radius: 6px;
+        animation: slideInRight 0.3s ease;
+      }
+
+      #score {
+        background: linear-gradient(135deg, rgba(126, 242, 126, 0.2), rgba(87, 172, 246, 0.2));
+        border: 2px solid rgba(126, 242, 126, 0.4);
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #7ef27e;
+        text-shadow: 0 0 10px rgba(126, 242, 126, 0.5);
+      }
+
+      #cipher-wheel-container {
+        background: rgba(10, 15, 36, 0.6);
+        border: 2px solid rgba(87, 172, 246, 0.3);
+        border-radius: 12px;
+        padding: 1.5rem;
+      }
+
+      .wheel-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .wheel-label {
+        color: #57acf6;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      #wheel-shift {
+        width: 100%;
+        height: 8px;
+        border-radius: 5px;
+        background: rgba(87, 172, 246, 0.2);
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      #wheel-shift::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00ffff, #57acf6);
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+
+      #wheel-shift::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00ffff, #57acf6);
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+
+      #wheel-shift-label {
+        color: #00ffff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+
+      .confirm-dialog {
+        display: none; /* Hide give up dialog */
+      }
+
+      .confirm-dialog p {
+        color: #ff6b9d;
+        font-weight: bold;
+        margin: 0 0 1rem 0;
+      }
     </style>
   </head>
   <body>
@@ -30,56 +324,67 @@
 
     <main class="page">
       <section class="card">
-        <h2>Level 1 — Caesar's Cipher</h2>
-        <p>Bob's messages use a Caesar cipher. Decode the messages and type the plaintext answer.</p>
+        <!-- Story Header -->
+        <div class="game-story-header">
+          <div class="eve-badge">EVE'S MISSION</div>
+          <div class="story-intro">
+            <p><strong>Bob's</strong> messages to <em>Alice</em> are protected with a Caesar cipher. I need to decode what they're talking about so I can find a way to interrupt their relationship.</p>
+            <div class="mission-objective">
+              🎯 Objective: Decode the encrypted messages. Hints are available if you get stuck.
+            </div>
+          </div>
+        </div>
+
+        <h2 style="color: #57acf6; text-align: center; margin-bottom: 2rem;">Level 1 — Caesar's Cipher</h2>
 
         <div id="level1">
-          <div id="qbox">
-            <p><strong>Encrypted message:</strong></p>
-            <div id="encrypted" class="encrypted">--</div>
-            <p id="hintline" style="margin-top:0.6rem; display:none;"></p>
-          </div>
-
-          <!-- Cipher wheel UI -->
-          <div id="cipher-wheel-container" aria-label="Caesar cipher wheel">
-            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-              <svg id="cipher-wheel-svg" class="cipher-wheel-svg" viewBox="0 0 260 260" width="260" height="260" role="img" aria-label="Cipher wheel"></svg>
-              <div style="min-width:200px;">
-                <div style="font-weight:700; margin-bottom:0.4rem;">Cipher Wheel</div>
-                <div class="cipher-wheel-meta" style="margin-bottom:0.6rem;">Inner: Plaintext • Outer: Ciphertext</div>
-                <label for="wheel-shift">Shift: <span id="wheel-shift-label">0</span></label>
-                <input id="wheel-shift" type="range" min="-25" max="25" step="1" value="0" style="width:100%; margin-top:0.4rem;">
+          <!-- Cipher Wheel Section (now first) -->
+          <div class="cipher-section">
+            <div class="section-title">Caesar Cipher</div>
+            <div id="cipher-wheel-container" aria-label="Caesar cipher wheel">
+              <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; justify-content: center;">
+                <svg id="cipher-wheel-svg" class="cipher-wheel-svg" viewBox="0 0 260 260" width="260" height="260" role="img" aria-label="Cipher wheel"></svg>
+                <div class="wheel-controls">
+                  <div class="wheel-label">Cipher Wheel Shift</div>
+                  <div class="cipher-wheel-meta" style="margin-bottom:0.6rem;">Rotate to align plaintext with ciphertext</div>
+                  <label for="wheel-shift" style="color: #57acf6; font-weight: bold;">
+                    Shift: <span id="wheel-shift-label">0</span>
+                  </label>
+                  <input id="wheel-shift" type="range" min="-25" max="25" step="1" value="0">
+                </div>
               </div>
             </div>
           </div>
 
-          <div id="answer-area" style="margin-top:1rem;">
-            <label for="answer">Your answer</label><br>
-            <input id="answer" type="text" placeholder="Type decoded message here" style="width:95%; padding:0.6rem; font-size:1rem; margin-top:0.4rem;" />
-            <div style="margin-top:0.6rem; display:flex; gap:0.6rem;">
-              <button id="hint" class="btn btn-outline">Show Hint</button>
-              <button id="giveup" class="btn btn-outline">Give up</button>
-              <button id="submit" class="btn">Submit</button>
-              <button id="next" class="btn btn-outline" style="display:none;">Next</button>
+          <!-- Encrypted Message Display (now second) -->
+          <div class="encrypted-message-box">
+            <div class="encrypted-label">Intercepted Message</div>
+            <div id="encrypted" class="encrypted">--</div>
+            <div id="hintline" class="hint-box">
+              <p>💡 <span id="hint-text"></span></p>
+            </div>
+          </div>
+
+          <!-- Answer Area -->
+          <div id="answer-area">
+            <label for="answer">Your Decoded Answer</label>
+            <input id="answer" type="text" placeholder="Type the decoded message here..." />
+            <div class="button-group">
+              <button id="hint" class="btn btn-outline">💡 Show Hint</button>
+              <button id="submit" class="btn btn-primary">✓ Submit Answer</button>
+              <button id="level2-btn" class="btn btn-primary" style="display:none;">🎯 Proceed to Level 2</button>
             </div>
           </div>
 
           <div id="feedback" style="margin-top:1rem; font-weight:700;"></div>
-          <div id="explanation" style="margin-top:0.6rem; color:#d0d8ff;"></div>
+          <div id="explanation" style="margin-top:0.6rem; display:none;"></div>
           
-          <!-- Inline confirmation dialog for Give up -->
-          <div id="confirm-giveup" style="display:none; margin-top:1rem; padding:1rem; background:rgba(255,179,71,0.15); border:2px solid #ffb347; border-radius:8px;">
-            <p style="margin:0 0 0.8rem 0; color:#ffb347; font-weight:700;">Are you sure you want to give up and see the answer?</p>
-            <div style="display:flex; gap:0.6rem;">
-              <button id="confirm-yes" class="btn">Yes, give up</button>
-              <button id="confirm-no" class="btn btn-outline">Cancel</button>
-            </div>
-          </div>
+          <!-- Remove confirmation dialog for Give up -->
 
-          <div id="score" style="margin-top:1rem; color:#ffffff;">Score: 0 / 0</div>
+          <!-- Remove score display -->
         </div>
 
-        <p style="margin-top:1.4rem"><a class="btn" href="index.html">Return Home</a></p>
+        <p style="margin-top:2rem; text-align: center;"><a class="btn btn-outline" href="index.html">⬅️ Return Home</a></p>
       </section>
     </main>
 
@@ -89,9 +394,9 @@
         Each entry: { encrypted: string, answer: string, hint: string (optional), explanation: string (optional) }
       */
       const questions = [
-        { encrypted: 'GH ZKHBD', hint: '+1', answer: 'HI ALICE', explanation: "They are always chatting. I'm jealous." },
-        { encrypted: 'FAI LOFAVFAE YFAOU', hint: '', answer: 'I LOVE YOU', explanation: "Oh no! Bob loves Alice. I want to steal Bob from Alice." },
-        { encrypted: 'RVBOUVN', hint: '-1', answer: 'QUANTUM', explanation: "Bob is interested in quantum information. I need to learn more about it." }
+        { encrypted: 'GH ZKHBD', hint: 'Shift: +1', answer: 'HI ALICE', explanation: "They are always chatting. I'm jealous." },
+        { encrypted: 'P SVCL FVB', hint: 'This is the last question! Try to answer yourself, if you love Bob!', answer: 'I LOVE YOU', explanation: "Oh no! Bob loves Alice. I want to steal Bob from Alice." },
+        { encrypted: 'RVBOUVN', hint: 'Shift: -1', answer: 'QUANTUM', explanation: "Bob is interested in quantum information. I need to learn more about it." }
       ];
 
       // Simple utilities for normalising answers for comparison
@@ -107,14 +412,12 @@
         const answerInput = document.getElementById('answer');
         const submitBtn = document.getElementById('submit');
         const hintBtn = document.getElementById('hint');
-        const giveupBtn = document.getElementById('giveup');
-        const nextBtn = document.getElementById('next');
+        const level2Btn = document.getElementById('level2-btn');
         const confirmGiveupDiv = document.getElementById('confirm-giveup');
         const confirmYesBtn = document.getElementById('confirm-yes');
         const confirmNoBtn = document.getElementById('confirm-no');
         const feedback = document.getElementById('feedback');
         const explanation = document.getElementById('explanation');
-        const scoreEl = document.getElementById('score');
 
         // Cipher wheel elements
         const wheelSvg = document.getElementById('cipher-wheel-svg');
@@ -225,15 +528,15 @@
           setWheelShift(s, true);
         });
 
-        let idx = 0; let correctCount = 0; let attemptCount = 0; let answered = false;
+        let idx = 0; let answered = false;
+        let completedQuestions = new Set(); // Track which questions have been completed
 
         // Save progress to localStorage
         function saveProgress() {
           const progress = {
             idx: idx,
-            correctCount: correctCount,
-            attemptCount: attemptCount,
-            answered: answered
+            answered: answered,
+            completedQuestions: Array.from(completedQuestions)
           };
           localStorage.setItem('level1Progress', JSON.stringify(progress));
         }
@@ -244,50 +547,85 @@
           if(saved) {
             const progress = JSON.parse(saved);
             idx = progress.idx;
-            correctCount = progress.correctCount;
-            attemptCount = progress.attemptCount;
             answered = progress.answered;
+            completedQuestions = new Set(progress.completedQuestions || []);
           }
         }
 
       function loadQuestion(i){
         const q = questions[i];
         encryptedEl.textContent = q.encrypted;
-        hintLine.textContent = q.hint ? `Hint: ${q.hint}` : '';
+        const hintText = document.getElementById('hint-text');
+        if (hintText) {
+          hintText.textContent = q.hint ? `${q.hint}` : '';
+        }
         hintLine.style.display = 'none';
         answerInput.value = '';
         feedback.textContent = '';
+        feedback.style.background = 'transparent';
+        feedback.style.border = 'none';
+        feedback.style.display = 'none';
         explanation.textContent = '';
-        confirmGiveupDiv.style.display = 'none';
-        nextBtn.style.display = 'none';
-        giveupBtn.disabled = false;
+        explanation.style.display = 'none';
+        level2Btn.style.display = 'none';
         submitBtn.disabled = false;
         answered = false;
         answerInput.focus();
-        scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
         // Update wheel for this question (animate if hint present)
         updateWheelForQuestion();
+        
+        // Show Level 2 button if all questions completed
+        if(completedQuestions.size === questions.length) {
+          level2Btn.style.display = '';
+        }
       }
 
       function checkAnswer(){
         if(answered) return;
         const user = normalise(answerInput.value);
-        const expected = normalise(questions[idx].answer);
-        attemptCount++;
-        if(user === expected){
-          feedback.style.color = '#7ef27e';
-          feedback.textContent = 'Correct!';
-          correctCount++;
-          explanation.textContent = questions[idx].explanation || '';
-          answered = true;
-          giveupBtn.disabled = true;
-          submitBtn.disabled = true;
-          nextBtn.style.display = '';
-        } else {
-          feedback.style.color = '#ff9a9a';
-          feedback.textContent = 'Incorrect. Try again or give up to see the answer.';
+        
+        // Don't deduct marks for empty answers
+        if(user === '') {
+          feedback.style.background = 'rgba(255, 179, 71, 0.2)';
+          feedback.style.border = '2px solid #ffb347';
+          feedback.style.color = '#ffb347';
+          feedback.textContent = '⚠️ Please enter an answer before submitting.';
+          feedback.style.display = 'block';
+          return;
         }
-        scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
+        
+        const expected = normalise(questions[idx].answer);
+        if(user === expected){
+          feedback.style.display = 'block';
+          feedback.style.background = 'rgba(126, 242, 126, 0.2)';
+          feedback.style.border = '2px solid #7ef27e';
+          feedback.style.color = '#7ef27e';
+          feedback.textContent = '✓ Correct! Great work, Eve!';
+          completedQuestions.add(idx); // Mark this question as completed
+          explanation.textContent = questions[idx].explanation || '';
+          explanation.style.display = 'block';
+          answered = true;
+          submitBtn.disabled = true;
+          
+          // Check if all questions are completed
+          if(completedQuestions.size === questions.length) {
+            level2Btn.style.display = '';
+            feedback.textContent = '✓ Excellent! You\'ve decrypted all messages! Proceed to Level 2.';
+          } else {
+            // Automatically load next question after a delay
+            setTimeout(() => {
+              idx = (idx + 1) % questions.length;
+              loadQuestion(idx);
+              saveProgress();
+            }, 2000); // 2 second delay to show feedback
+          }
+        } else {
+          feedback.style.display = 'block';
+          feedback.style.background = 'rgba(255, 154, 154, 0.2)';
+          feedback.style.border = '2px solid #ff9a9a';
+          feedback.style.color = '#ff9a9a';
+          feedback.textContent = '❌ Decryption Failed. Try again! If you really love Bob.';
+        }
         saveProgress();
       }
 
@@ -296,42 +634,11 @@
 
       hintBtn.addEventListener('click', ()=>{
         const q = questions[idx];
-        if(q.hint){
-          hintLine.style.display = hintLine.style.display === 'none' ? 'block' : 'none';
-        } else {
-          alert('No hint available for this question.');
-        }
+        hintLine.style.display = hintLine.style.display === 'none' ? 'block' : 'none';
       });
 
-      giveupBtn.addEventListener('click', ()=>{
-        console.log('Give up clicked, answered:', answered);
-        if(answered) return;
-        // Show inline confirmation
-        confirmGiveupDiv.style.display = 'block';
-      });
-
-      confirmYesBtn.addEventListener('click', ()=>{
-        feedback.style.color = '#ffb347';
-        feedback.textContent = `You gave up. The answer was: ${questions[idx].answer}`;
-        explanation.textContent = questions[idx].explanation || '';
-        answered = true;
-        giveupBtn.disabled = true;
-        submitBtn.disabled = true;
-        attemptCount++;
-        scoreEl.textContent = `Score: ${correctCount} / ${attemptCount}`;
-        confirmGiveupDiv.style.display = 'none';
-        nextBtn.style.display = '';
-        saveProgress();
-      });
-
-      confirmNoBtn.addEventListener('click', ()=>{
-        confirmGiveupDiv.style.display = 'none';
-      });
-
-      nextBtn.addEventListener('click', ()=>{
-        idx = (idx + 1) % questions.length;
-        loadQuestion(idx);
-        saveProgress();
+      level2Btn.addEventListener('click', ()=>{
+        window.location.href = 'level2.html';
       });
 
       // Build the wheel once

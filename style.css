@@ -72,6 +72,26 @@
       overflow-x: hidden;
     }
 
+/* ========== HERO SECTION - QUANTUM THEME ========== */
+.hero {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f0c29 100%);
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-inner {
+  max-width: 900px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
 /* Hero banner for home page */
     .hero {
       display: flex;
@@ -108,6 +128,10 @@
       gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
+      margin-top: 2rem;
+      animation: fadeInUp 1.2s ease-out;
+      position: relative;
+      z-index: 10; /* Ensure buttons are above quantum-bg particles */
     }
 
     .btn {
@@ -124,11 +148,29 @@
 
     .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
 
+    .btn-primary {
+  background: linear-gradient(135deg, #ff6b9d, #c06c84);
+  color: white;
+  border: 2px solid #ff6b9d;
+  box-shadow: 0 5px 20px rgba(255, 107, 157, 0.4);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ff85b3, #d07c94);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(255, 107, 157, 0.6);
+}
+
     .btn-outline {
       background: transparent;
-      color: #fff;
-      border: 2px solid rgba(255,255,255,0.14);
-      box-shadow: none;
+      color: #00ffff;
+      border: 2px solid #00ffff;
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 255, 255, 0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4);
     }
 
     /* Basic page/card spacing */
@@ -614,3 +656,247 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
+
+  /* ========== STORY CARD ========== */
+.story-card {
+  background: rgba(20, 20, 50, 0.8);
+  border: 2px solid rgba(100, 200, 255, 0.3);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 150, 255, 0.2);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.character-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.character-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+  letter-spacing: 0.3em;
+}
+
+.quantum-dot {
+  width: 10px;
+  height: 10px;
+  background: #00ffff;
+  border-radius: 50%;
+  animation: pulse-glow 2s infinite;
+}
+
+.story-content {
+  color: #e0e0ff;
+  line-height: 1.8;
+}
+
+.story-text {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.story-text strong {
+  color: #ff6b9d;
+  font-weight: bold;
+}
+
+.story-text em {
+  color: #ffd700;
+  font-style: normal;
+}
+
+.story-text.highlight {
+  color: #ff6b9d;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+/* ========== MISSION CARD ========== */
+.mission-card {
+  background: rgba(30, 15, 50, 0.9);
+  border: 2px solid rgba(255, 107, 157, 0.4);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(255, 107, 157, 0.2);
+  animation: fadeInUp 1s ease-out;
+}
+
+.mission-title {
+  color: #ff6b9d;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.quantum-icon {
+  animation: rotate-slow 4s linear infinite;
+}
+
+.mission-content {
+  color: #e0e0ff;
+  text-align: center;
+}
+
+.mission-content > p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.mission-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.feature {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.feature:hover {
+  background: rgba(0, 255, 255, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+}
+
+.feature-icon {
+  font-size: 1.5rem;
+}
+
+.mission-callout {
+  font-size: 1.3rem;
+  color: #ffd700;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* ========== QUANTUM BACKGROUND EFFECTS ========== */
+.quantum-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #00ffff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  animation: float 10s infinite ease-in-out;
+}
+
+.particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 80%; top: 40%; animation-delay: 2s; }
+.particle:nth-child(3) { left: 30%; top: 70%; animation-delay: 4s; }
+.particle:nth-child(4) { left: 60%; top: 10%; animation-delay: 1s; }
+.particle:nth-child(5) { left: 90%; top: 80%; animation-delay: 3s; }
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+    transform: scale(1.2);
+  }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-30px) translateX(20px);
+  }
+  50% {
+    transform: translateY(-60px) translateX(-20px);
+  }
+  75% {
+    transform: translateY(-30px) translateX(20px);
+  }
+}
+
+.pulse {
+  animation: pulse-btn 2s infinite;
+}
+
+@keyframes pulse-btn {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .story-card, .mission-card {
+    padding: 1.5rem;
+  }
+  
+  .character-name {
+    font-size: 1.5rem;
+  }
+  
+  .mission-title {
+    font-size: 1.5rem;
+  }
+  
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn {
+    justify-content: center;
+  }
+}
