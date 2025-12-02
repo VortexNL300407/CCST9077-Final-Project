@@ -148,6 +148,10 @@
     .ball.right { left: calc(100% - 64px); transform: translateX(0) scale(1.02); box-shadow: 0 12px 40px rgba(46,204,113,0.12); background: linear-gradient(135deg,#7ef27e,#57acf6); }
     .demo-note { color:#d6e6ff; font-size:0.98rem; line-height:1.4; text-align:center; }
     .demo-controls .btn { width:100%; margin-bottom:0.6rem; }
+
+    /* Compact variant used for smaller inline buttons (matches the no-force demo) */
+    .demo-controls.compact { flex-direction: row; gap: 0.6rem; justify-content: center; }
+    .demo-controls.compact .btn { width: auto; margin-bottom: 0; padding: 0.6rem 0.9rem; }
     .demo-result { margin-top:0.6rem; font-weight:700; color:#ffe14a; min-height:1.2rem; }
 
     /* subtle glow for collapsed result */

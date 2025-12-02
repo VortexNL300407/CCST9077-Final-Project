@@ -92,8 +92,10 @@
 
             <!-- Controls below the box -->
             <div class="demo-controls">
-              <button id="open-box" class="btn">Open Box (Measure)</button>
-              <button id="reset-box" class="btn btn-outline">Reset (Re-superpose)</button>
+              <div class="demo-controls compact" style="gap:0.6rem; margin-bottom:0.6rem;">
+                <button id="open-box" class="btn">Open Box (Measure)</button>
+                <button id="reset-box" class="btn btn-outline">Reset</button>
+              </div>
               <div id="demo-result" class="demo-result" aria-live="polite"></div>
               <div style="margin-top:0.8rem; display:flex; gap:0.6rem; justify-content:center;">
                 <button id="view-questions" class="btn">View Questions</button>
@@ -290,6 +292,14 @@
 
         // initialize
         reset();
+
+        // If this page was opened with #mcq, show the questions view immediately
+        if(window.location.hash === '#mcq'){
+          if(materials) materials.style.display = 'none';
+          if(mcq) mcq.style.display = 'block';
+          // scroll to top for visibility
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       })();
     </script>
 
