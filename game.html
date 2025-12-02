@@ -364,42 +364,81 @@
       <h3>Levels</h3>
       <ul class="levels-list">
         <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+        <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quantum Cryptography</title>
+    <link rel="icon" type="image/png" href="fav.png">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <img src="logo.png" alt="Site Logo" class="logo">
+      <h1>Quantum Cryptography</h1>
+      <p><em>Cryptography of the future</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <div class="hero-inner">
+        <h2>Welcome to Quantum Cryptography</h2>
+        <p class="lead">Step into Eve's shoes and learn how modern and quantum techniques affect real-world security.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="game.html">Play the Game</a>
+          <a class="btn btn-outline" href="materials.html">View Materials</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Levels slide-out tab -->
+    <div id="levels-tab" title="Open levels">Levels</div>
+    <aside id="levels-sidebar" aria-hidden="true">
+      <button id="levels-close" class="btn btn-outline">Close</button>
+      <h3>Levels</h3>
+      <ul class="levels-list">
+        <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
         <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
         <li><a href="level3.1.html">Level 3 — QKD Simulation</a></li>
       </ul>
     </aside>
+
+    <!-- Floating Settings / Music controls -->
+    <audio id="bgm" src="media/bgm.mp3" loop></audio>
+    <div id="settings-btn">⚙️</div>
+    <div id="settings-menu">
+      <div id="mute-option" class="option">Mute Music</div>
+      <div id="theme-option" class="option">Another Option</div>
+    </div>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">Hello! I'm a placeholder!</div>
+    </div>
+
+    <footer>
+      &copy; CCST9077
+    </footer>
   </body>
-</html>
 
-<script>
-  const btn = document.getElementById("settings-btn");
-  const menu = document.getElementById("settings-menu");
-  const oneOption = document.getElementById("1option");
-  const twoOption = document.getElementById("2option");
-
-  let menuOpen = false;
-
-  btn.onclick = () => {
-    menuOpen = !menuOpen;
-    menu.style.display = menuOpen ? "block" : "none";
-  };
-</script>
-<script>
-  // Levels sidebar toggle (shared behaviour)
-  (function(){
-    const tab = document.getElementById('levels-tab');
-    const sidebar = document.getElementById('levels-sidebar');
-    const closeBtn = document.getElementById('levels-close');
-    if(tab && sidebar){
-      tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
-      closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
-      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
-    }
-  })();
-</script>
-
-  <!-- Audio element for background music -->
-  <audio id="bgm" src="media/bgm.mp3" loop></audio>
+  <!-- LEVELS SIDEBAR TOGGLE SYSTEM -->
+  <script>
+    (function(){
+      const tab = document.getElementById('levels-tab');
+      const sidebar = document.getElementById('levels-sidebar');
+      const closeBtn = document.getElementById('levels-close');
+      if(tab && sidebar){
+        tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+        closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+        document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+      }
+    })();
+  </script>
+  <!-- END LEVELS SIDEBAR TOGGLE SYSTEM -->
 
   <!-- BACKGROUND MUSIC SYSTEM - INSERT/REMOVE THIS BLOCK AS NEEDED -->
   <script>
