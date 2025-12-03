@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Level 2 - Quantum Cryptography</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" id="theme-stylesheet">
     <style>
       /* Add background image styling */
       body {
@@ -172,15 +172,6 @@
       &copy; CCST9077 | Members :
     </footer>
 
-    <div id="settings-btn">⚙️</div>
-    <div id="settings-menu">
-      <div id="mute-option" class="option">Mute Music</div>
-      <div id="theme-option" class="option">Another Option</div>
-    </div>
-    <div id="info-container">
-      <div id="info-icon">ℹ</div>
-      <div id="info-popup">Hello! I'm a placeholder!</div>
-    </div>
     <!-- Levels slide-out tab -->
     <div id="levels-tab" title="Open levels">Levels</div>
     <aside id="levels-sidebar" aria-hidden="true">
@@ -511,35 +502,6 @@
     </script>
   </body>
 
-  <!-- Audio element for background music -->
-  <audio id="bgm" src="media/bgm.mp3" loop></audio>
-
-  <!-- BACKGROUND MUSIC SYSTEM - INSERT/REMOVE THIS BLOCK AS NEEDED -->
-  <script>
-    (function(){
-      const bgm = document.getElementById('bgm');
-      const btn = document.getElementById('settings-btn');
-      const menu = document.getElementById('settings-menu');
-      const muteOption = document.getElementById('mute-option');
-      let menuOpen = false;
-
-      let savedMuted = localStorage.getItem('musicMuted') === 'true';
-      let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
-      bgm.muted = savedMuted;
-      bgm.currentTime = savedTime;
-
-      window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
-      bgm.volume = 0.2; bgm.muted = savedMuted; bgm.play().catch(()=>{});
-
-      setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
-
-      btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
-      muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
-      muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
-    })();
-  </script>
-  <!-- END BACKGROUND MUSIC SYSTEM -->
-
   <!-- PARALLAX EFFECT SCRIPT -->
   <script>
     (function(){
@@ -577,4 +539,76 @@
     })();
   </script>
   <!-- END PARALLAX EFFECT SCRIPT -->
+
+  <!-- Audio element for background music -->
+  <audio id="bgm" loop>
+    <source src="media/bgm.mp3" type="audio/mpeg">
+  </audio>
+  <div id="settings-btn">⚙️</div>
+  <div id="settings-menu">
+    <div id="mute-option" class="option">Mute Music</div>
+    <div id="theme-option" class="option">🔄 Larger Fonts (Accessibility)</div>
+  </div>
+  <div id="info-container">
+    <div id="info-icon">ℹ</div>
+    <div id="info-popup">This project is an informative and educational website designed to make information on quantum cryptography accessible to a wider audience.</div>
+  </div>
+
+  <!-- BACKGROUND MUSIC SYSTEM -->
+  <script>
+    (function(){
+      const bgm = document.getElementById('bgm');
+      if(!bgm) return;
+      const btn = document.getElementById('settings-btn');
+      const menu = document.getElementById('settings-menu');
+      const muteOption = document.getElementById('mute-option');
+      let menuOpen = false;
+
+      let savedMuted = localStorage.getItem('musicMuted') === 'true';
+      let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
+      bgm.muted = savedMuted;
+      bgm.currentTime = savedTime;
+
+      window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
+      bgm.volume = 0.2; bgm.play().catch(()=>{});
+
+      setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
+
+      btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
+      muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
+      muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
+    })();
+  </script>
+  <!-- END BACKGROUND MUSIC SYSTEM -->
+
+  <!-- THEME SWITCHER SCRIPT -->
+  <script>
+    (function(){
+      const themeOption = document.getElementById('theme-option');
+      const themeSheet = document.getElementById('theme-stylesheet');
+      if(!themeOption || !themeSheet) return;
+
+      let useAccessibleTheme = localStorage.getItem('useAccessibleTheme') === 'true';
+      
+      function applyTheme(accessible) {
+        if(accessible) {
+          themeSheet.href = 'styl2.css';
+          themeOption.textContent = '🔄 Standard Fonts';
+          localStorage.setItem('useAccessibleTheme', 'true');
+        } else {
+          themeSheet.href = 'style.css';
+          themeOption.textContent = '🔄 Larger Fonts (Accessibility)';
+          localStorage.setItem('useAccessibleTheme', 'false');
+        }
+      }
+
+      applyTheme(useAccessibleTheme);
+
+      themeOption.addEventListener('click', ()=>{
+        useAccessibleTheme = !useAccessibleTheme;
+        applyTheme(useAccessibleTheme);
+      });
+    })();
+  </script>
+  <!-- END THEME SWITCHER SCRIPT -->
 </html>
