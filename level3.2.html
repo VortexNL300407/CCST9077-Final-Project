@@ -446,7 +446,15 @@
       }
 
       if(!allCorrect) {
-        feedback.innerHTML = '<p style="color: #ff9a9a;">Incorrect! Your basis selections don\'t match what you intercepted from Alice. Try again.</p>';
+        // record that the player made a mistake preparing fake bits and immediately end the run
+        try {
+          localStorage.setItem('level3_mistake', 'true');
+          localStorage.setItem('level3_key_correct', 'false');
+          localStorage.setItem('level3_completed', 'false');
+        } catch(e){}
+        feedback.innerHTML = '<p style="color: #ff9a9a;">Incorrect! Your basis selections don\'t match what you intercepted from Alice.</p>';
+        // immediately navigate to the ending page so outcome is determined now
+        setTimeout(() => { window.location.href = 'ending.html'; }, 200);
         return;
       }
 
@@ -547,11 +555,15 @@
 
       if(userKey === correctKeyStr) {
         feedback.innerHTML = '<p style="color: #7ef27e;">✓ Correct key!</p>';
+        // mark completed and go to ending page
+        try { localStorage.setItem('level3_key_correct', 'true'); localStorage.setItem('level3_completed','true'); } catch(e){}
         setTimeout(() => {
-          document.getElementById('game-main').style.display = 'none';
-          document.getElementById('victory-screen').style.display = 'block';
+          // go to ending page which will decide Good/Bad based on 'level3_mistake'
+          window.location.href = 'ending.html';
         }, 500);
       } else {
+        // record that player submitted a wrong key at least once
+        try { localStorage.setItem('level3_key_correct', 'false'); localStorage.setItem('level3_mistake', 'true'); } catch(e){}
         feedback.innerHTML = `<p style="color: #ff9a9a;">✗ Incorrect. Try again!</p>`;
       }
     });
@@ -590,6 +602,8 @@
       const startBtn = document.getElementById('start-level');
       if(startBtn) {
         startBtn.addEventListener('click', () => {
+          // reset any previous ending flags for a fresh run
+          try { localStorage.removeItem('level3_mistake'); localStorage.removeItem('level3_completed'); } catch(e){}
           title.style.display = 'none';
           main.style.display = 'block';
           renderPhase1();

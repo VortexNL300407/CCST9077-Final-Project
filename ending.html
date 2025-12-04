@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ending — Quantum Cryptography</title>
+    <link rel="icon" type="image/png" href="favi.png">
+    <link rel="stylesheet" href="style.css" id="theme-stylesheet">
+    <style>
+      /* minor adjustments for the ending card inside the site template */
+      .ending-container { max-width: 900px; margin: 40px auto; padding: 24px; }
+      .ending-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); color: #0b1220; }
+      .ending-title { font-size: 1.6rem; margin-bottom: 12px; color: #0b1220; }
+      .ending-body { font-size: 1rem; line-height: 1.45; color: #111; }
+      .hidden { display: none; }
+      .actions { margin-top: 18px; }
+
+      /* Hero background styling copied from index so visuals match site template */
+      main.hero {
+        position: relative;
+        background-image: url('media/quantum.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        overflow: hidden;
+      }
+      main.hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(10, 15, 30, 0.85);
+        z-index: 0;
+      }
+      .hero-inner { position: relative; z-index: 6; }
+      /* ensure action buttons are clickable above visual particles */
+      .actions .btn { position: relative; z-index: 10; }
+      /* make particle layer non-interactive on this page so buttons remain clickable */
+      .quantum-bg { z-index: 0; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo" aria-hidden="false" style="display:inline-block; vertical-align:middle; margin-bottom:0.4rem;">
+        <svg width="60" height="60" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Site logo">
+          <rect width="64" height="64" rx="10" fill="#1b2740" />
+          <circle cx="32" cy="24" r="12" fill="#57acf6" />
+          <text x="32" y="38" font-size="18" text-anchor="middle" fill="#fff" font-family="Verdana,Arial" font-weight="700">Q</text>
+        </svg>
+      </div>
+      <h1 style="display:inline-block; margin-left:0.6rem; vertical-align:middle;">Quantum Cryptography</h1>
+      <p><em>Cryptography of the future</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <div class="hero-inner">
+      <div class="ending-container">
+      <div id="good" class="story-card hidden" style="max-width:820px; margin:0.6rem auto;">
+        <div class="character-badge">
+          <span class="quantum-dot"></span>
+          <span class="character-name">GOOD ENDING</span>
+          <span class="quantum-dot"></span>
+        </div>
+        <div class="story-content" style="text-align:center;">
+          <p style="text-align:center; max-width:820px; margin:0.6rem auto; color:#d6e6ff;">Congratulations! You successfully intercepted and decoded the key without raising suspicion. Bob is impressed by your cunning and resourcefulness. After a few charming messages and a surprising amount of quantum banter, you and Bob grow close — and before long he asks you out. You become Bob's girlfriend, and he happily shares his quantum secrets over cozy coffee dates. Together you explore entanglement, protocols, and cute analogies about photons.</p>
+        </div>
+        <div class="actions"><a class="btn btn-primary" href="index.html">Return Home</a></div>
+      </div>
+
+      <div id="bad" class="story-card hidden" style="max-width:820px; margin:0.6rem auto;">
+        <div class="character-badge">
+          <span class="quantum-dot"></span>
+          <span class="character-name">BAD ENDING</span>
+          <span class="quantum-dot"></span>
+        </div>
+        <div class="story-content" style="text-align:center;">
+          <p style="text-align:center; max-width:820px; margin:0.6rem auto; color:#d6e6ff;">Oh no — things went wrong. Your interference was detected or the key you submitted didn't match. Instead of romantic success, you find yourself drawn deeper into the mysteries of quantum mechanics. You accept a research position and become a devoted quantum scientist, spending your nights debugging experiments and pondering the many-worlds interpretation. It's a noble path, but not the romantic ending you hoped for.</p>
+        </div>
+        <div class="actions"><a class="btn btn-primary" href="index.html">Return Home</a></div>
+      </div>
+
+      <div id="loading" class="story-card" style="max-width:820px; margin:0.6rem auto;">
+        <div class="character-badge">
+          <span class="quantum-dot"></span>
+        </div>
+        <div class="story-content" style="text-align:center; color:#d6e6ff;">
+          <p style="text-align:center; max-width:820px; margin:0.6rem auto;">Deciding Your Fate... Please wait while we determine how your story ends.</p>
+        </div>
+      </div>
+      </div>
+
+      <!-- Quantum Background Effects (visual consistency with home) -->
+      <div class="quantum-bg">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+      </div>
+    </main>
+
+    <!-- Levels slide-out tab -->
+    <div id="levels-tab" title="Open levels">Levels</div>
+    <aside id="levels-sidebar" aria-hidden="true">
+      <button id="levels-close" class="btn btn-outline">Close</button>
+      <h3>Levels</h3>
+      <ul class="levels-list">
+        <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+        <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
+        <li><a href="level3_materials.html">Level 3 — QKD Simulation</a></li>
+      </ul>
+    </aside>
+
+    <!-- Floating Settings / Music controls -->
+    <audio id="bgm" loop>
+      <source src="media/bgm.mp3" type="audio/mpeg">
+    </audio>
+    <div id="settings-btn">⚙️</div>
+    <div id="settings-menu">
+      <div id="mute-option" class="option">Mute Music</div>
+      <div id="theme-option" class="option">🔄 Larger Fonts (Accessibility)</div>
+    </div>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">This project is an informative and educational website designed to make information on quantum cryptography accessible to a wider audience.</div>
+    </div>
+
+    <footer>
+      &copy; CCST9077
+    </footer>
+
+    <script>
+      // On load, decide Good vs Bad based on level3_mistake OR level3_completed
+      (function(){
+        let mistake = null;
+        let completed = null;
+        try { mistake = localStorage.getItem('level3_mistake'); completed = localStorage.getItem('level3_completed'); } catch(e){}
+
+        const goodEl = document.getElementById('good');
+        const badEl = document.getElementById('bad');
+        const loading = document.getElementById('loading');
+
+        // Decision rules: if mistake === 'true' OR completed === 'false' -> BAD
+        // Only show GOOD when completed === 'true' AND mistake !== 'true'
+        setTimeout(() => {
+          loading.classList.add('hidden');
+
+          if(mistake === 'true' || completed === 'false' || completed === null) {
+            badEl.classList.remove('hidden');
+          } else {
+            // completed === 'true' and no mistake
+            goodEl.classList.remove('hidden');
+          }
+        }, 300);
+      })();
+    </script>
+
+    <!-- BACKGROUND MUSIC SYSTEM -->
+    <script>
+      (function(){
+        const bgm = document.getElementById('bgm');
+        if(!bgm) return;
+        const btn = document.getElementById('settings-btn');
+        const menu = document.getElementById('settings-menu');
+        const muteOption = document.getElementById('mute-option');
+        let menuOpen = false;
+
+        let savedMuted = localStorage.getItem('musicMuted') === 'true';
+        let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
+        bgm.muted = savedMuted;
+        bgm.currentTime = savedTime;
+
+        window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
+        bgm.volume = 0.2; bgm.play().catch(()=>{});
+
+        setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
+
+        btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
+        muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
+        muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
+      })();
+    </script>
+
+    <!-- LEVELS SIDEBAR TOGGLE SYSTEM -->
+    <script>
+      (function(){
+        const tab = document.getElementById('levels-tab');
+        const sidebar = document.getElementById('levels-sidebar');
+        const closeBtn = document.getElementById('levels-close');
+        if(tab && sidebar){
+          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+        }
+      })();
+    </script>
+  </body>
+</html>
