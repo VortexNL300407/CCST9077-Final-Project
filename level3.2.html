@@ -453,8 +453,8 @@
           localStorage.setItem('level3_completed', 'false');
         } catch(e){}
         feedback.innerHTML = '<p style="color: #ff9a9a;">Incorrect! Your basis selections don\'t match what you intercepted from Alice.</p>';
-        // immediately navigate to the ending page so outcome is determined now
-        setTimeout(() => { window.location.href = 'ending.html'; }, 200);
+        // show feedback briefly, then navigate to the ending page so outcome is determined now
+        setTimeout(() => { window.location.href = 'ending.html'; }, 800);
         return;
       }
 
@@ -562,9 +562,15 @@
           window.location.href = 'ending.html';
         }, 500);
       } else {
-        // record that player submitted a wrong key at least once
-        try { localStorage.setItem('level3_key_correct', 'false'); localStorage.setItem('level3_mistake', 'true'); } catch(e){}
-        feedback.innerHTML = `<p style="color: #ff9a9a;">✗ Incorrect. Try again!</p>`;
+        // record that player submitted a wrong key at least once and end the run
+        try {
+          localStorage.setItem('level3_key_correct', 'false');
+          localStorage.setItem('level3_mistake', 'true');
+          localStorage.setItem('level3_completed', 'false');
+        } catch(e){}
+        feedback.innerHTML = `<p style="color: #ff9a9a;">✗ Incorrect. Redirecting to ending...</p>`;
+        // give user a moment to see feedback, then go to ending page (Bad ending)
+        setTimeout(() => { window.location.href = 'ending.html'; }, 800);
       }
     });
 
