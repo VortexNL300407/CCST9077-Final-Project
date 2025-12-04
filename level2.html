@@ -390,6 +390,19 @@
             explanation: "The person measuring one of the entangled particles has no control over whether they get a result equivalent to 'heads' or 'tails.' It's completely random. Since they can't force it to be a specific value, they can't encode a meaningful message. The correlation is only apparent later, when both sides compare their random results and find they match."
           }
         ];
+        
+        // Added question from user: Which Quantum Algorithm should we utilize to break through Alice and Bob’s Public Key Cryptography Security?
+        questions.push({
+          q: "Which Quantum Algorithm should we utilize to break through Alice and Bob’s Public Key Cryptography Security?",
+          choices: [
+            "Shor’s Algorithm",
+            "HHL Algorithm",
+            "Grover’s Algorithm",
+            "Deutsch-Josza Algorithm"
+          ],
+          correct: 0,
+          explanation: "Ans: A) Because Shor’s Algorithm was designed to efficiently break RSA Public Key Cryptography in less than a day."
+        });
 
         let idx = 0; let score = 0; let attempts = 0; let answered = false;
 
