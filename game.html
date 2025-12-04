@@ -393,13 +393,14 @@
             <input id="answer" type="text" placeholder="Type the decoded message here..." />
             <div class="button-group">
               <button id="hint" class="btn btn-outline">💡 Show Hint</button>
+              <button id="prev-btn" class="btn btn-outline">⬅️ Previous Question</button>
               <button id="submit" class="btn btn-primary">✓ Submit Answer</button>
               <button id="level2-btn" class="btn btn-primary" style="display:none;">🎯 Proceed to Level 2</button>
-            </div>
-          </div>
+                </div>
+              </div>
 
-          <div id="feedback" style="margin-top:1rem; font-weight:700;"></div>
-          <div id="explanation" style="margin-top:0.6rem; display:none;"></div>
+              <div id="feedback" style="margin-top:1rem; font-weight:700;"></div>
+              <div id="explanation" style="margin-top:0.6rem; display:none;"></div>
           
           <!-- Remove confirmation dialog for Give up -->
 
@@ -440,6 +441,7 @@
         const confirmNoBtn = document.getElementById('confirm-no');
         const feedback = document.getElementById('feedback');
         const explanation = document.getElementById('explanation');
+        const prevBtn = document.getElementById('prev-btn');
 
         // Cipher wheel elements
         const wheelSvg = document.getElementById('cipher-wheel-svg');
@@ -574,6 +576,30 @@
           }
         }
 
+        // Wire Previous Question button
+        if(prevBtn) {
+          prevBtn.addEventListener('click', ()=>{
+            if(typeof idx !== 'number' || !Array.isArray(questions) || questions.length === 0) return;
+            idx = (idx - 1 + questions.length) % questions.length;
+            loadQuestion(idx);
+            saveProgress();
+          });
+        }
+
+        // Wire give-up confirm (no review history)
+        if(confirmYesBtn) {
+          confirmYesBtn.addEventListener('click', ()=>{
+            completedQuestions.add(idx);
+            answered = true;
+            submitBtn.disabled = true;
+            // Advance to next question
+            idx = (idx + 1) % questions.length;
+            loadQuestion(idx);
+            saveProgress();
+            if(confirmGiveupDiv) confirmGiveupDiv.style.display = 'none';
+          });
+        }
+
       function loadQuestion(i){
         const q = questions[i];
         encryptedEl.textContent = q.encrypted;
@@ -595,10 +621,14 @@
         answerInput.focus();
         // Update wheel for this question (animate if hint present)
         updateWheelForQuestion();
+        // Hide Previous button on the very first question
+        if(prevBtn) prevBtn.style.display = (i === 0) ? 'none' : '';
         
-        // Show Level 2 button if all questions completed
-        if(completedQuestions.size === questions.length) {
+        // Show Level 2 button only when on the last question and all questions completed
+        if (i === questions.length - 1 && completedQuestions.size === questions.length) {
           level2Btn.style.display = '';
+        } else {
+          level2Btn.style.display = 'none';
         }
       }
 
@@ -629,17 +659,39 @@
           answered = true;
           submitBtn.disabled = true;
           
-          // Check if all questions are completed
-          if(completedQuestions.size === questions.length) {
-            level2Btn.style.display = '';
-            feedback.textContent = '✓ Excellent! You\'ve decrypted all messages! Proceed to Level 2.';
-          } else {
-            // Automatically load next question after a delay
+          // After correct answer: advance to next question if not at the last index.
+          // If at last index, try to go to the next unanswered question; if all answered show Level 2.
+          const lastIndex = questions.length - 1;
+          function findNextUnanswered(from) {
+            for(let i = 1; i <= questions.length; i++){
+              const cand = (from + i) % questions.length;
+              if(!completedQuestions.has(cand)) return cand;
+            }
+            return -1;
+          }
+
+          if(idx < lastIndex){
+            // advance sequentially
             setTimeout(() => {
-              idx = (idx + 1) % questions.length;
+              idx = idx + 1;
               loadQuestion(idx);
               saveProgress();
-            }, 2000); // 2 second delay to show feedback
+            }, 2000);
+          } else {
+            // we're at the last question
+            const nextUnanswered = findNextUnanswered(idx);
+            if(nextUnanswered === -1){
+              // all done
+              level2Btn.style.display = '';
+              feedback.textContent = '✓ Excellent! You\'ve decrypted all messages! Proceed to Level 2.';
+            } else {
+              // jump to next unanswered question
+              setTimeout(() => {
+                idx = nextUnanswered;
+                loadQuestion(idx);
+                saveProgress();
+              }, 2000);
+            }
           }
         } else {
           feedback.style.display = 'block';
