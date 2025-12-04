@@ -760,9 +760,16 @@
 
 .mission-features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* Force a 2x2 layout on typical desktop widths, fall back to single column on small screens */
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin: 2rem 0;
+}
+
+@media (max-width: 640px) {
+  .mission-features {
+    grid-template-columns: 1fr;
+  }
 }
 
 .feature {
