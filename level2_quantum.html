@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Level 2 — Quantum Computing</title>
+    <link rel="stylesheet" href="style.css" id="theme-stylesheet">
+    <style>
+      /* Add background image styling */
+      body {
+        position: relative;
+        background-image: url('media/game2.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        overflow-x: hidden;
+      }
+      
+      /* Add overlay to improve text readability */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(10, 15, 30, 0.88);
+        z-index: -1;
+      }
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Quantum Computing — Level 2 Materials</h1>
+      <p><em>Why quantum algorithms can be faster (and what that really means)</em></p>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Game</a>
+        <a href="materials.html">Materials</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <h2 style="text-align:center; margin-top:0;">Level 2 — Materials: Quantum Computing</h2>
+        <div style="max-width:900px; margin:0.8rem auto; color:#d6e6ff;">
+          <p>Many common misunderstandings about why Quantum Computers can be more efficient than Classical Computers is that “Quantum Computers can do computations in parallel.” Although this is somewhat true, we must take into account the second step at which Quantum Computers take to truly gain an efficiency advantage over Classical Algorithms.</p>
+
+          <p>With Quantum Superposition, we can essentially allow our qubits to do computation in parallel, yes. But to actually calculate the outputs of these computations, we would have to essentially “Open the box”. But doing so would result in the superposition of these qubits to collapse to one of the many parallel possibilities. This would essentially be the same or maybe even worse than computing every possible computation one by one with Classical Algorithms.</p>
+
+          <p>To gain a computational advantage, we must use a method in which we can “Filter” the superpositioned qubits in such a way that we can remove the Unfavorable States from the Favorable States that we want. To do this, quantum computers use a sort of interference. The same way waves, when interfere with another, will interact with each other such that opposing amplitudes cancel out and like amplitudes amplify.</p>
+
+          <p>The challenge of implementing both Parallel Computing and Interference is what makes Quantum Algorithms hard to design. It is not a “holy grail” nor a quick solution for every problem and algorithm. The algorithms that have been developed today are:</p>
+
+          <ul style="margin-top:0.6rem; color:#d6e6ff;">
+            <li><strong>Shor’s Algorithm</strong> — To break Modern Public Key Cryptography</li>
+            <li><strong>Harrow‑Hassidim‑Lloyd (HHL) Algorithm</strong> — To Solve Linear Equations</li>
+            <li><strong>Grover’s Algorithm</strong> — To Search Through an Unstructured Database</li>
+            <li><strong>Deutsch‑Josza Algorithm</strong> — For Pure Mathematical Problems</li>
+          </ul>
+
+          <div style="margin-top:1rem; display:flex; gap:0.6rem; justify-content:center;">
+            <a href="level2.html" class="btn btn-outline">Back to Level 2 Materials</a>
+            <a href="level2.html#mcq" class="btn btn-outline">View Questions</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; CCST9077 | Members :
+    </footer>
+
+    <!-- Levels slide-out tab (same as other pages) -->
+    <div id="levels-tab" title="Open levels">Levels</div>
+    <aside id="levels-sidebar" aria-hidden="true">
+      <button id="levels-close" class="btn btn-outline">Close</button>
+      <h3>Levels</h3>
+      <ul class="levels-list">
+        <li><a href="game.html">Level 1 — Caesar's Cipher</a></li>
+        <li><a href="level2.html">Level 2 — Modern Crypto (MCQ)</a></li>
+        <li><a href="level3_materials.html">Level 3 — QKD Materials</a></li>
+      </ul>
+    </aside>
+
+    <script>
+      (function(){
+        const tab = document.getElementById('levels-tab');
+        const sidebar = document.getElementById('levels-sidebar');
+        const closeBtn = document.getElementById('levels-close');
+        if(tab && sidebar){
+          tab.addEventListener('click', ()=>{ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); });
+          closeBtn.addEventListener('click', ()=>{ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); });
+          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } });
+        }
+      })();
+    </script>
+
+    <!-- PARALLAX EFFECT SCRIPT -->
+    <script>
+      (function(){
+        const body = document.body;
+        if(!body) return;
+        
+        let ticking = false;
+        const parallaxSpeed = -0.05;
+        
+        // Calculate initial offset to prevent jump
+        const initialScroll = window.pageYOffset;
+        const initialOffset = initialScroll * parallaxSpeed;
+        
+        function updateParallax() {
+          const scrolled = window.pageYOffset;
+          const offset = scrolled * parallaxSpeed;
+          
+          // Apply offset relative to initial position
+          body.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+          
+          ticking = false;
+        }
+        
+        function requestTick() {
+          if (!ticking) {
+            window.requestAnimationFrame(updateParallax);
+            ticking = true;
+          }
+        }
+        
+        // Set initial position
+        body.style.backgroundPositionY = `calc(50% + ${initialOffset}px)`;
+        
+        window.addEventListener('scroll', requestTick, { passive: true });
+      })();
+    </script>
+    <!-- END PARALLAX EFFECT SCRIPT -->
+
+    <!-- Audio element for background music -->
+    <audio id="bgm" loop>
+      <source src="media/bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="settings-btn">⚙️</div>
+    <div id="settings-menu">
+      <div id="mute-option" class="option">Mute Music</div>
+      <div id="theme-option" class="option">🔄 Larger Fonts (Accessibility)</div>
+    </div>
+    <div id="info-container">
+      <div id="info-icon">ℹ</div>
+      <div id="info-popup">This project is an informative and educational website designed to make information on quantum cryptography accessible to a wider audience.</div>
+    </div>
+
+    <!-- BACKGROUND MUSIC SYSTEM -->
+    <script>
+      (function(){
+        const bgm = document.getElementById('bgm');
+        if(!bgm) return;
+        const btn = document.getElementById('settings-btn');
+        const menu = document.getElementById('settings-menu');
+        const muteOption = document.getElementById('mute-option');
+        let menuOpen = false;
+
+        let savedMuted = localStorage.getItem('musicMuted') === 'true';
+        let savedTime = parseFloat(localStorage.getItem('musicTime')) || 0;
+        bgm.muted = savedMuted;
+        bgm.currentTime = savedTime;
+
+        window.addEventListener('click', ()=>{ bgm.play().catch(()=>{}); bgm.volume = 0.2; }, { once: true });
+        bgm.volume = 0.2; bgm.play().catch(()=>{});
+
+        setInterval(()=>{ localStorage.setItem('musicTime', bgm.currentTime); }, 1000);
+
+        btn.onclick = ()=>{ menuOpen = !menuOpen; menu.style.display = menuOpen ? 'block' : 'none'; };
+        muteOption.onclick = ()=>{ bgm.muted = !bgm.muted; localStorage.setItem('musicMuted', bgm.muted); muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music'; };
+        muteOption.textContent = bgm.muted ? 'Unmute Music' : 'Mute Music';
+      })();
+    </script>
+    <!-- END BACKGROUND MUSIC SYSTEM -->
+
+    <!-- THEME SWITCHER SCRIPT -->
+    <script>
+      (function(){
+        const themeOption = document.getElementById('theme-option');
+        const themeSheet = document.getElementById('theme-stylesheet');
+        if(!themeOption || !themeSheet) return;
+
+        let useAccessibleTheme = localStorage.getItem('useAccessibleTheme') === 'true';
+        
+        function applyTheme(accessible) {
+          if(accessible) {
+            themeSheet.href = 'styl2.css';
+            themeOption.textContent = '🔄 Standard Fonts';
+            localStorage.setItem('useAccessibleTheme', 'true');
+          } else {
+            themeSheet.href = 'style.css';
+            themeOption.textContent = '🔄 Larger Fonts (Accessibility)';
+            localStorage.setItem('useAccessibleTheme', 'false');
+          }
+        }
+
+        applyTheme(useAccessibleTheme);
+
+        themeOption.addEventListener('click', ()=>{
+          useAccessibleTheme = !useAccessibleTheme;
+          applyTheme(useAccessibleTheme);
+        });
+      })();
+    </script>
+    <!-- END THEME SWITCHER SCRIPT -->
+  </body>
+</html>
